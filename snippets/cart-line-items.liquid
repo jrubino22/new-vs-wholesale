@@ -195,7 +195,7 @@
               Unit quantity: <span>{{ line_item.quantity }}</span>
             </div>
           	<div class="quantity__wrapper" >
-              <button class="quantity__button_btn quantity__button--minus-tt" >&minus;</button>
+              <button class="quantity__button_btn_cart quantity__button--minus-tt" >&minus;</button>
               <label for="updates_{{ line_item.key }}" class="visually-hidden">{{ 'cart.label.quantity' | t }}</label>
               <input onchange='validate(event)'
                      class="quantity__input_dt"
@@ -209,7 +209,7 @@
                      value="{{ qunty }}"
                      style="min-width: 80px"/>
                      
-              <button class="quantity__button_btn quantity__button--plus-tt">+</button>
+              <button class="quantity__button_btn_cart quantity__button--plus-tt">+</button>
             </div>
             
           <input class="hidden" 
