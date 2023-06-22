@@ -427,7 +427,8 @@
          if(parseInt(qtycase) == 1 || parseInt(qtycase) == 0) {
            $(this).closest(".shopify-product-form").find(".quantity__input_case").val(1) ;
            $(this).closest(".shopify-product-form").find(".quantity__input").val(value);
-           $(this).closest(".shopify-product-form").find(".currency_price_wcp").text('$'+totalprice) 
+           $(this).closest(".shopify-product-form").find(".currency_price_wcp").text('$'+totalprice)
+           console.log('$'+totalprice) 
          }
          // if(qty == 1 || qtycase == 0) // {
              // $(this).closest(".shopify-product-form").find(".quantity__input_case").val(1);
