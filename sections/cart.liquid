@@ -450,6 +450,7 @@
   
   function validate(evt) {
     var theEvent = evt || window.event;
+    let key = theEvent.keyCode || theEvent.which;
 
     // Handle paste
     if (theEvent.type === 'paste') {
@@ -462,6 +463,7 @@
 
     var regex = /[0-9]|\./;
     if( !regex.test(key) ) {
+
       theEvent.returnValue = false;
       if(theEvent.preventDefault) theEvent.preventDefault();
     }
