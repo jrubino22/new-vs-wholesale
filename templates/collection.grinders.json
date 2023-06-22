@@ -1,0 +1,158 @@
+{
+  "sections": {
+    "hero": {
+      "type": "collection-hero",
+      "settings": {
+        "text_align": "align--middle-center",
+        "show_title": false,
+        "show_title_below": false,
+        "show_description": false,
+        "show_description_below": false,
+        "show_image": true,
+        "bg_position": "center-top",
+        "image_height": "use_image",
+        "overlay_opacity": 0,
+        "overlay_color": "#ffffff",
+        "text_color": "text--white"
+      }
+    },
+    "subcollections": {
+      "type": "collection-sub",
+      "settings": {
+        "show_subcollection": true,
+        "text_color": "text--white",
+        "text_align": "align--middle-center",
+        "select_image": "collection",
+        "bg_position": "center-center",
+        "aspect_ratio": 0.6,
+        "overlay_opacity": 20,
+        "overlay_color": "#000000"
+      }
+    },
+    "main": {
+      "type": "collection",
+      "disabled": true,
+      "blocks": {
+        "collections": {
+          "type": "collections",
+          "disabled": true,
+          "settings": {
+            "title": "All collections"
+          }
+        },
+        "filters": {
+          "type": "filters",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "collections",
+        "filters"
+      ],
+      "settings": {
+        "soldouts": false,
+        "show_quantity": true,
+        "show_remaining": true,
+        "grid_setting_large": 4,
+        "grid_setting_small": 2,
+        "product_limit": 36,
+        "enable_layout_toggle": false,
+        "product_form": true,
+        "collection_sorting": true,
+        "hide_sidebar": true
+      }
+    },
+    "16445310624dd3351c": {
+      "type": "section-collection",
+      "settings": {
+        "title": "CleanCut Non-Stick Herb Grinders",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "cleancut-non-stick-herb-grinders",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "164453180114e801ce": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Non-Stick Grinder Cards",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": true,
+        "collection": "nonstick-grinder-cards",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "16445309626038fd35": {
+      "type": "section-collection",
+      "settings": {
+        "title": "SharpShred Herb Grinders",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "sharpshred-grinders",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "16445308739384c3b7": {
+      "type": "section-collection",
+      "settings": {
+        "title": "SharpShred 360 Grinders",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "sharpshred-360-grinders",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "2a46640d-f5e7-423b-990b-01dda706d787": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Dine In Collection",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "dine-in-collection",
+        "grid": 5,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "16553138959280adae": {
+      "type": "section-description",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "subcollections",
+    "main",
+    "16445310624dd3351c",
+    "164453180114e801ce",
+    "16445309626038fd35",
+    "16445308739384c3b7",
+    "2a46640d-f5e7-423b-990b-01dda706d787",
+    "16553138959280adae"
+  ]
+}

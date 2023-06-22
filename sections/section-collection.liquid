@@ -1,0 +1,215 @@
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+
+{% assign customerlevel = '' %}
+
+{% if customer.tags contains 'master-distributor' %}
+
+  	{% assign customerlevel = 'master-distributor' %}
+
+{% elsif customer.tags contains 'distributor' %}
+
+	{% assign customerlevel = 'distributor' %}
+
+{% else %}
+
+	{% assign customerlevel = 'retailer' %}
+
+{% endif %}
+
+<div {{collection.handle}} class="homepage-collection {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-row">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+    <div class="js-grid" data-grid-large="{{ section.settings.grid }}" data-grid-small="2">
+      <!-- /snippets/product-grid-item.liquid -->
+      
+      {% assign counter = 0 %}
+      
+      
+      {% for product in collection.products %}
+      
+      	{% assign quantdivcoll = 1 %}
+      
+      	{% assign current_variant = product.selected_or_first_available_variant %}
+      	      	
+        {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+
+            {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}
+      
+       	{% elsif product.metafields.my_fields.case_1 != blank %}
+
+            {% assign quantdivcoll = product.metafields.my_fields.case_1 %}
+
+        {% endif %}
+      
+        {% if customerlevel == 'distributor' %}
+      
+          {% assign quantdivcoll = quantdivcoll | divided_by: 2  %}
+      
+        {% endif %}
+      
+      
+      	{%- assign current_inventory = current_variant.inventory_quantity -%}
+      
+      	{% assign case_count = current_inventory | divided_by:quantdivcoll %}
+
+        {% if case_count == 0 and product.variants.size > 1 %}
+      
+      		{% for variant in product.variants %}
+      
+      			{% assign quantdivcoll = 1 %}
+      
+                {% assign current_variant = variant %}
+
+                {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+
+                    {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}
+
+                {% elsif product.metafields.my_fields.case_1 != blank %}
+
+                    {% assign quantdivcoll = product.metafields.my_fields.case_1 %}
+
+                {% endif %}
+
+                {% if customerlevel == 'distributor' %}
+
+                  {% assign quantdivcoll = quantdivcoll | divided_by: 2  %}
+
+                {% endif %}
+
+                {%- assign current_inventory = current_variant.inventory_quantity -%}
+                {% assign case_count = current_inventory | divided_by:quantdivcoll %}
+      
+      		{% endfor %}
+      
+        {% endif %}
+      	
+      {% if customerlevel == 'retailer' %}
+      
+        {% if counter < product_limit and product.available or section.settings.soldouts == true %}
+
+          {% render 'product-grid-item', product: product, product_form: section.settings.product_form, show_quantity: section.settings.show_quantity, show_remaining: section.settings.show_remaining %}
+
+          {% assign counter = counter | plus: 1 %} 
+      
+        {% endif %}
+      
+      {% else %}
+      
+        {% if counter < product_limit and  product.available and case_count > 0 or  section.settings.soldouts == true  %}
+      
+          {% assign counter = counter | plus: 1 %}
+
+          {% render 'product-grid-item', product: product, product_form: section.settings.product_form, show_quantity: section.settings.show_quantity, show_remaining: section.settings.show_remaining %}
+
+        {% endif %}
+      
+      {% endif %}
+      
+      
+      {% else %}
+      
+        {% render 'onboarding-product-grid-item', limit: product_limit %}
+      
+      {% endfor %}
+    </div>
+    {% if section.settings.show_view_all %}
+      <div class="text-center">
+        <a href="{{ collection.url }}" class="btn--outline uppercase">
+          {{ 'collections.general.view_all' | t }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+	{
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selection",
+      "default": true
+    },
+	{
+      "type": "checkbox",
+      "id": "show_remaining",
+      "label": "Show inventory countdown",
+      "default": true,
+      "info": "Count down the last 10 items in stock."
+    },
+  	{
+      "type": "checkbox",
+      "id": "product_form",
+      "label": "Show product form",
+      "default": true
+    },
+  	{
+      "type": "checkbox",
+      "id": "soldouts",
+      "label": "Show Soldouts",
+      "default": false
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Products per row",
+      "default": 3
+    },
+    {
+      "type":    "range",
+      "id":      "rows",
+      "min":     1,
+      "max":     8,
+      "step":    1,
+      "label":   "Number of rows",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "section bg--neutral",
+      "options": [
+        { "value": "section bg--neutral", "label": "Default"},
+        { "value": "section bg--accent", "label": "Light"},
+        { "value": "section--dark bg--invert", "label": "Dark"},
+        { "value": "section--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

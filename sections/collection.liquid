@@ -1,0 +1,386 @@
+{% assign customerlevel = '' %}
+
+{% if customer.tags contains 'master-distributor' %}
+
+  	{% assign customerlevel = 'master-distributor' %}
+
+{% elsif customer.tags contains 'distributor' %}
+
+	{% assign customerlevel = 'distributor' %}
+
+{% else %}
+
+	{% assign customerlevel = 'retailer' %}
+
+{% endif %}
+<!-- /sections/collection.liquid -->
+{% comment %}
+	{% style %}
+  .price-tier-img {
+		  margin-top: 5%;
+          max-width: 100%;
+  		  height: auto;
+		  min-height: calc(160px + var(--menu-height));
+ 	}
+	{% endstyle %}
+{% if customer.tags contains 'retail' and collection.metafields.my_fields.retail_tiers != blank %}
+	<div style="text-align: center;">
+		<img class="price-tier-img" src="{{ collection.metafields.my_fields.retail_tiers | img_url: '1100x1100' }}" alt="" >
+	</div>
+{% elsif customer.tags contains 'distributor' and collection.metafields.my_fields.distributor_tiers != blank %}
+	<div style="text-align: center;">
+		<img class="price-tier-img" src="{{ collection.metafields.my_fields.distributor_tiers | img_url: '1100x1100' }}" alt="" >
+	</div>
+{% elsif customer.tags contains 'master-distributor' and collection.metafields.my_fields.master_distro_tiers != blank %}
+	<div style="text-align: center;">
+		<img class="price-tier-img" src="{{ collection.metafields.my_fields.master_distro_tiers | img_url: '1100x1100' }}" alt="" >
+	</div>
+{% endif %} 
+{% endcomment %}
+{% capture default_show_filters %}{%- unless section.settings.hide_sidebar -%}filters--default-visible{%- endunless -%}{% endcapture %}
+
+<div data-section-id="{{ section.id }}"
+  data-section-type="collection"
+  data-sort="{{ section.settings.collection_sorting }}">
+
+  {% if section.settings.show_subcollection %}
+    {% render 'subcollections', collection: collection, section: section %}
+  {% endif %}
+
+  <div class="collection" data-sidebar-toggle>
+    <div class="wrapper">
+      {%- assign collection_sidebar = false -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- assign collection_sidebar = true -%}
+      {%- endif -%}
+
+      {% if collection_sidebar or section.settings.collection_sorting or section.settings.enable_layout_toggle %}
+        <nav class="collection__nav">
+          <div class="collection__nav__buttons">
+            {% if collection_sidebar %}
+              {% capture current_filters_count %}
+                {%- assign filter_count = 0 -%}
+                {%- for filter in collection.filters -%}
+                  {%- assign filter_count = filter_count | plus: filter.active_values.size -%}
+                {%- endfor -%}
+                {%- if filter_count > 0 -%}
+                  <div class="badge">{{filter_count}}</div>
+                {%- endif -%}
+              {% endcapture %}
+              <button class="collection__filters__toggle {{ default_show_filters }}" data-filters-toggle="filters">
+                <span class="hide-filters">{{ 'collections.sidebar.hide_filters' | t }}</span>
+                <span class="show-filters">{{ 'collections.sidebar.filter' | t }}</span>
+                {{ current_filters_count }}
+                {% render 'icon-filter' %}
+              </button>
+            {% endif %}
+            {% if section.settings.collection_sorting %}
+              <div class="collection__sort">
+                {% render 'collection-sorting', collection: collection %}
+              </div>
+            {% endif %}
+          </div>
+          {% if section.settings.enable_layout_toggle %}
+            <div class="collection__layout">
+              <span data-toggle-grid="1">{% render 'icon-grid-1' %}</span>
+              <span data-toggle-grid="2">{% render 'icon-grid-2' %}</span>
+              <span data-toggle-grid="3">{% render 'icon-grid-3' %}</span>
+              <span data-toggle-grid="4">{% render 'icon-grid-4' %}</span>
+            </div>
+          {% endif %}
+        </nav>
+      {% endif %}     
+      <div class="collection__content">
+        {% if collection_sidebar %}
+        <aside class="collection__filters__wrapper {{ default_show_filters }}" data-filters="filters" data-default-hide="{{ section.settings.hide_sidebar }}">
+          <div class="collection__filters__outer">
+            <div class="drawer__top">
+
+              <div class="drawer__top__left">
+                <p class="cart__drawer__title">{{ 'collections.sidebar.filter' | t }}</p>
+              </div>
+
+              <button class="drawer__button drawer__close"
+                data-filters-toggle="filters"
+                aria-label="{{ 'general.accessibility.close' | t }}">
+                {% render 'icon-close' %}
+              </button>
+            </div>
+            <div class="collection__filters__inner">
+              {% render 'collection-filters-sidebar', section: section, collection: collection %}
+            </div>
+          </div>
+          <span class="drawer__underlay" data-filters-underlay>
+            <span class="drawer__underlay__fill"></span>
+            <span class="drawer__underlay__blur"></span>
+          </span>
+        </aside>
+        {% endif %}
+        
+        {% assign limit_r = section.settings.grid_setting_large %}
+         {% if collection.handle == 'all-products' %}
+        	{% assign limit_r = 6 %}
+        {% endif %}
+
+        
+		{% assign limit_p = section.settings.product_limit %}
+        	
+        {% if collection.handle == 'all-products' %}
+        	{% assign limit_p = 250 %}
+        {% endif %}
+
+        {%- paginate collection.products by limit_p -%}
+          <div class="collection__products">
+            <div class="js-grid" data-grid-large="{{ section.settings.grid_setting_large }}" data-grid-small="{{ section.settings.grid_setting_small }}">
+              <!-- /snippets/product-grid-item.liquid -->
+			
+              {% assign counter = 0 %}
+              {% assign product_limit = limit_p %}
+      
+
+                {% for product in collection.products %}
+
+                  {% assign quantdivcoll = 1 %}
+
+                  {% assign current_variant = product.selected_or_first_available_variant %}
+
+                  {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+
+                      {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}
+
+                  {% elsif product.metafields.my_fields.case_1 != blank %}
+
+                      {% assign quantdivcoll = product.metafields.my_fields.case_1 %}
+
+                  {% endif %}
+
+                  {% if customerlevel == 'distributor' %}
+
+                    {% assign quantdivcoll = quantdivcoll | divided_by: 2  %}
+
+                  {% endif %}
+
+
+                  {%- assign current_inventory = current_variant.inventory_quantity -%}
+
+                  {% assign case_count = current_inventory | divided_by:quantdivcoll %}
+
+                  {% if case_count == 0 and product.variants.size > 1 %}
+
+                      {% for variant in product.variants %}
+
+                          {% assign quantdivcoll = 1 %}
+
+                          {% assign current_variant = variant %}
+
+                          {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+
+                              {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}
+
+                          {% elsif product.metafields.my_fields.case_1 != blank %}
+
+                              {% assign quantdivcoll = product.metafields.my_fields.case_1 %}
+
+                          {% endif %}
+
+                          {% if customerlevel == 'distributor' %}
+
+                            {% assign quantdivcoll = quantdivcoll | divided_by: 2  %}
+
+                          {% endif %}
+
+                          {%- assign current_inventory = current_variant.inventory_quantity -%}
+                          {% assign case_count = current_inventory | divided_by:quantdivcoll %}
+
+                      {% endfor %}
+
+                  {% endif %}
+
+                {% if customerlevel == 'retailer' %}
+
+                  {% if counter < product_limit and product.available or section.settings.soldouts == true %}
+
+                    {% render 'product-grid-item', product: product, product_form: section.settings.product_form, show_quantity: section.settings.show_quantity, show_remaining: section.settings.show_remaining %}
+
+                    {% assign counter = counter | plus: 1 %} 
+
+                  {% endif %}
+
+                {% else %}
+
+                  {% if counter < product_limit and  product.available and case_count > 0 or  section.settings.soldouts == true  %}
+
+                    {% assign counter = counter | plus: 1 %}
+
+                    {% render 'product-grid-item', product: product, product_form: section.settings.product_form, show_quantity: section.settings.show_quantity, show_remaining: section.settings.show_remaining %}
+
+                  {% endif %}
+
+                {% endif %}
+
+
+                {% else %}
+
+                  {% render 'onboarding-product-grid-item', limit: product_limit %}
+
+                {% endfor %}
+              
+              
+            </div>
+            {% if paginate.pages > 1 %}
+              <div class="text-center">
+                {% render 'pagination-custom', paginate: paginate %}
+              </div>
+            {% endif %}
+          </div>
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</div>
+
+    {% if collection.description != blank %}
+    <div class="collection_description">
+      <span class="truncate2">
+        {{ collection.description }}
+      </span>
+    </div>
+    {% endif %}
+
+<script>
+
+  
+</script>
+
+{% schema %}
+{
+  "name": "Collection product grid",
+  "settings": [
+  	{
+      "type": "checkbox",
+      "id": "soldouts",
+      "label": "Show Soldouts",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Products per row"
+    },
+ 	{
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Show quantity selection",
+      "default": true
+    },
+	{
+      "type": "checkbox",
+      "id": "show_remaining",
+      "label": "Show inventory countdown",
+      "default": true,
+      "info": "Count down the last 10 items in stock."
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_large",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Desktop",
+      "default": 6
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_small",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Mobile",
+      "default": 2
+    },
+    {
+      "type":    "range",
+      "id":      "product_limit",
+      "min":     10,
+      "max":     110,
+      "step":    1,
+      "label":   "Products per page",
+      "default": 101
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_layout_toggle",
+      "label": "Show layout options",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "product_form",
+      "label": "Show product form",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_sorting",
+      "label": "Show collection sorting",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection filter sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_sidebar",
+      "label": "Hide filter sidebar by default",
+      "info": "Customers will have the option to show them"
+    }
+    ],
+    "blocks": [
+    {
+      "type": "filters",
+      "name": "Filters",
+      "limit": 1,
+      "settings": [      
+        {
+          "type": "paragraph",
+          "content": "Create filters in the [navigation](/admin/menus) section of your online store setings."
+        }
+      ]
+    },
+    {
+      "type": "collections",
+      "name": "All Collections",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Show a list of all the collections in your store."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "All collections"
+        }
+      ]
+    },
+    {
+      "type": "nav_links",
+      "name": "Navigation links",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "collection_linklist",
+          "label": "Sidebar navigation",
+          "info": "Create a list of [navigation links](/admin/menus) to show specific collections in the sidebar."
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

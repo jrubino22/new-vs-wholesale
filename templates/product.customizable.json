@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "product-custom": {
+      "type": "product-custom",
+      "blocks": {
+        "f8758a47-b401-4717-ad83-c4174475cb0e": {
+          "type": "form",
+          "settings": {
+            "variant_form": "button",
+            "show_quantity": true,
+            "show_remaining": false,
+            "enable_payment_button": false,
+            "subscriptions_enable_selectors": false,
+            "info_page": ""
+          }
+        }
+      },
+      "block_order": [
+        "f8758a47-b401-4717-ad83-c4174475cb0e"
+      ],
+      "settings": {
+        "image_width": "wide",
+        "align": "left",
+        "product_breadcrumbs": true,
+        "enable_video_looping": true,
+        "zoom_enable": true
+      }
+    }
+  },
+  "order": [
+    "product-custom"
+  ]
+}

@@ -1,0 +1,87 @@
+<div class="full__page__form__wrapper">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="grid__item medium-up--one-half medium-up--push-one-quarter text-center">
+        <div class="full__page__form">
+          <h1 class="account__form__title">Event Contact Form</h1>
+          <form id="event-contact-form">
+
+            <label>Company Name:</label>
+                  <input id="company-name" name="CompanyName" type="text"><br> 
+
+            <label>Contact Person:</label>
+                  <input id="contact-person" name="ContactPerson" type="text"><br> 
+
+            <label>Email:</label>
+                  <input id="email" name="Email" type="text"><br>
+
+            <label>Phone Number:</label>
+                <input id="phone" name="PhoneNumber" type="text"><br>
+
+            <label>Address:</label>
+                  <textarea id="addy" name="Address" cols="40" rows="4"></textarea> <br>
+
+            <label for="business-type">Type of Business</label>	
+                   <select id="business-type" name="TypeOfBusiness">
+                      <option value="Store" selected>Store</option>
+                      <option value="Store chain">Store Chain (3+ locations)</option>
+                      <option value="Distributor">Distributor</option>
+                      <option value="Dispensary">Dispensary</option>
+                      <option value="Dispensary chain">Dispensary Chain (3+ locations)</option>
+                      <option value="other" >Other</option>
+                    </select> 
+
+                  <input id="specify" type="hidden" name="SpecifyIfOther" placeholder="Please Specify">
+            <br>
+
+            <label>Interested In:</label>
+                  <textarea id="interest-in" name="InterestedIn" cols="40" rows="4"></textarea> <br>
+
+               <input id="submit-contact-form" type="submit" value="Submit">
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ 'jquery.serialize-object.min.js' | asset_url | script_tag }}
+
+
+<script>
+  
+  $("#business-type").change(function () {
+    const selected_option = $('#business-type').val();
+    
+    if (selected_option === 'other') {
+      $('#specify').attr("type", "text")
+    } else {
+      $('#specify').attr("type", "hidden")
+    }
+  })
+      
+      
+  
+const $form = $('form#event-contact-form'),
+    url = 'https://script.google.com/macros/s/AKfycbwnByx_1Mp3rEwjT-vJBm6tu_poIBzCZSmgSc9ioo7ePWcfgzhzgOi6f7jvEfMeW_Z4/exec'
+
+$('#submit-contact-form').on('click', function(e) { 
+  e.preventDefault();
+  const data = $form.serializeArray();
+  data.push({ name: 'callback', value: '?' });
+  const jsonpUrl = url + '?' + $.param(data);
+  $.getJSON(jsonpUrl, function(response) {
+    if (response.result === 'success') {
+      console.log(response);
+      alert("Your information has been submitted and we will be reaching out to you shortly, thank you!");
+      location.reload();
+    } else {
+      console.error(response);
+      alert("There was an error submitting your information. Please try again later.");
+    }
+  });
+});
+
+</script>

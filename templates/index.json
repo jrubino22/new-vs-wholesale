@@ -1,0 +1,258 @@
+{
+  "sections": {
+    "16364758394305b588": {
+      "type": "section-hero",
+      "settings": {
+        "image_link": "",
+        "image": "shopify:\/\/shop_images\/Wholesale_Banner_511.png",
+        "image_retail": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
+        "image_distro": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
+        "image_master": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
+        "bg_position": "center-top",
+        "height": "use_image",
+        "overlay_opacity": 15,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "link_text": "",
+        "link": "https:\/\/wholesale.vsyndicate.com\/account\/login?return_url=%2Faccount",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "7ba470f1-16a2-4ece-ae3e-93e6f55bd610": {
+      "type": "section-html",
+      "custom_css": [
+        "body {font-family: Arial, sans-serif;}",
+        ".top-icon-section {text-align: center; padding: 20px 0; background-color: #f5f5f5;}",
+        ".icon-text-container {display: inline-block; margin: 0 40px; vertical-align: top;}",
+        ".icon-text {display: inline-block; margin-left: 5px; vertical-align: top;}",
+        ".homepage-icon-head {font-size: 18px; font-weight: bold; margin-bottom: 5px; display: block;}",
+        ".icon-text p {font-size: 16px; margin: 0;}",
+        "@media (max-width: 767px) {.icon-text-container {display: block; margin: 0 auto 20px; }}"
+      ],
+      "settings": {
+        "html": "<div class=\"top-icon-section\" style=\"text-align: center; padding: 20px 0;\">\n  <div class=\"icon-text-container\" style=\"display: inline-block\">\n    <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" viewbox=\"0 0 640 512\" height=\"50\">\n      <path d=\"M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z\"><\/path>\n    <\/svg>\n  \n  <div class=\"icon-text\" style=\"display: inline-block\">\n    <span class=\"homepage-icon-head\">Minimum Order<\/span>\n    <p>$350 USD<\/p>\n  <\/div>\n<\/div>\n  <div class=\"icon-text-container\" style=\"display: inline-block\">\n    <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" viewbox=\"0 0 384 512\" height=\"50\">\n      <path d=\"M16 64C16 28.7 44.7 0 80 0H304c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H80c-35.3 0-64-28.7-64-64V64zM144 448c0 8.8 7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160c-8.8 0-16 7.2-16 16zM304 64H80V384H304V64z\"><\/path>\n    <\/svg>\n  \n  <div class=\"icon-text\" style=\"display: inline-block\">\n    <span class=\"homepage-icon-head\">Give us a Call<\/span>\n    <p>1-888-849-4999<\/p>\n<\/div>\n  <\/div>\n<\/div>",
+        "full_width": true
+      }
+    },
+    "1650391117a52eac0b": {
+      "type": "section-collection",
+      "custom_css": [
+        ".homepage-collection {padding-top: 20px;}"
+      ],
+      "settings": {
+        "title": "OUR LATEST & BEST-SELLING PRODUCTS",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "homepage-collection",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "165039693269d6b66f": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Metal Rollin' Trays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "all-metal-trays",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650396917cd33ad3c": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Sharpshred 360 Herb Grinders",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "sharpshred-360-grinders",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650397180a49b8e01": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Roll N' go bundles",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "roll-n-go-bundles",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "16505563360f8589ec": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Grinder Cards",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": true,
+        "collection": "nonstick-grinder-cards",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650393020163bf48d": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Sharpshred herb grinders",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "sharpshred-grinders",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "16503970265143069b": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Glass Rollin' Trays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "glass-rolling-trays",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650397104254e0c78": {
+      "type": "section-collection",
+      "settings": {
+        "title": "3D high def rollin' trays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "3d-high-def-rollin-trays",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650397361091fe0f5": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Hybrid Rollin' trays with dab mats",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "hybrid-rollin-tray-1",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "165039752458ca72ff": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Solestash Stash Jars",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "stash-jar",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "165039768113db5e8a": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Syndicase Stash Boxes",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "syndicase",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1636656224bced9b76": {
+      "type": "section-collection",
+      "settings": {
+        "title": "SILICONE ASHTRAYS",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "silicone-ashtrays",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "1650391062af83ad28": {
+      "type": "section-collection",
+      "settings": {
+        "title": "blazin' ashtray metal",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "blazin-ashtrays-metal",
+        "grid": 6,
+        "rows": 1,
+        "bg": "section bg--neutral",
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "16364758394305b588",
+    "7ba470f1-16a2-4ece-ae3e-93e6f55bd610",
+    "1650391117a52eac0b",
+    "165039693269d6b66f",
+    "1650396917cd33ad3c",
+    "1650397180a49b8e01",
+    "16505563360f8589ec",
+    "1650393020163bf48d",
+    "16503970265143069b",
+    "1650397104254e0c78",
+    "1650397361091fe0f5",
+    "165039752458ca72ff",
+    "165039768113db5e8a",
+    "1636656224bced9b76",
+    "1650391062af83ad28"
+  ]
+}

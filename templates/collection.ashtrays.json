@@ -1,0 +1,127 @@
+{
+  "sections": {
+    "hero": {
+      "type": "collection-hero",
+      "settings": {
+        "text_align": "align--middle-center",
+        "show_title": false,
+        "show_title_below": false,
+        "show_description": false,
+        "show_description_below": false,
+        "show_image": true,
+        "bg_position": "center-top",
+        "image_height": "use_image",
+        "overlay_opacity": 0,
+        "overlay_color": "#ffffff",
+        "text_color": "text--white"
+      }
+    },
+    "subcollections": {
+      "type": "collection-sub",
+      "disabled": true,
+      "settings": {
+        "show_subcollection": true,
+        "text_color": "text--white",
+        "text_align": "align--middle-center",
+        "select_image": "collection",
+        "bg_position": "center-center",
+        "aspect_ratio": 0.6,
+        "overlay_opacity": 20,
+        "overlay_color": "#000000"
+      }
+    },
+    "main": {
+      "type": "collection",
+      "disabled": true,
+      "blocks": {
+        "collections": {
+          "type": "collections",
+          "disabled": true,
+          "settings": {
+            "title": "All collections"
+          }
+        },
+        "filters": {
+          "type": "filters",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "collections",
+        "filters"
+      ],
+      "settings": {
+        "soldouts": false,
+        "show_quantity": true,
+        "show_remaining": true,
+        "grid_setting_large": 4,
+        "grid_setting_small": 2,
+        "product_limit": 36,
+        "enable_layout_toggle": false,
+        "product_form": true,
+        "collection_sorting": true,
+        "hide_sidebar": true
+      }
+    },
+    "1644868201e20c0da9": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Glass Ashtrays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "glass-ashtrays",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "1644868225d8772396": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Metal Ashtrays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "blazin-ashtrays-metal",
+        "grid": 5,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "1653058254bafc1966": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Silicone Ashtrays",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": true,
+        "soldouts": false,
+        "collection": "silicone-ashtrays",
+        "grid": 5,
+        "rows": 5,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "1655314028b236f1b4": {
+      "type": "section-description",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "subcollections",
+    "main",
+    "1644868201e20c0da9",
+    "1644868225d8772396",
+    "1653058254bafc1966",
+    "1655314028b236f1b4"
+  ]
+}

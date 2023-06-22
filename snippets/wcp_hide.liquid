@@ -1,0 +1,54 @@
+{% assign is_wcp_wholesale_customer = false %}
+{% assign active_discounts = shop.metafields.wcp_active_discounts.wcp_active_discounts %}
+{% assign active_discounts_array = active_discounts | split: ',' %}
+{% if shop.metafields.wcp_status.wcp_status != 'disabled' and customer %}
+    {% for discount_key in active_discounts_array %}
+        {% assign key_split = discount_key | split: '-' %}
+        {% assign key_split_length = key_split | size %}
+        {% if key_split_length > 2 %}            
+            {% assign removeable_key = key_split.last | prepend: '-' %}
+            {% assign wcp_hide_sale_badge_customer_tag = discount_key | remove_first: removeable_key %}
+        {% else %}
+            {% assign wcp_hide_sale_badge_customer_tag = key_split[0] %}      
+        {% endif %}
+        {% if customer.tags contains wcp_hide_sale_badge_customer_tag %}
+            {% assign is_wcp_wholesale_customer = true %}     
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% if is_wcp_wholesale_customer == true %}
+<style>
+  .compare-at, del,.net-order-prices s, .product__price--off {
+  display:none !important;
+  }  
+  .Price--highlight {
+    color: #303030;
+}
+</style>
+
+{% if template contains 'cart' %}
+      <script>
+        function hide_wcp_total(){
+          if($('.wcp-original-cart-total').css('text-decoration-line') == 'line-through' ){
+            $('.wcp-original-cart-total').hide();
+          }else{
+            $('.wcp-original-cart-total').show();
+          }
+        }
+        var timesRun = 0;
+        var interval = setInterval(function(){
+          timesRun += 1;
+          if(timesRun === 10){
+            clearInterval(interval);
+          }
+          hide_wcp_total();
+
+        }, 1000); 
+        $('#wcp-30-open').on('click',function(){
+          $('.net-order-prices s').hide();
+          $('.net-order-prices .wcp-original-cart-total').hide();  
+        });
+    </script>
+
+{% endif %}
+{% endif %}

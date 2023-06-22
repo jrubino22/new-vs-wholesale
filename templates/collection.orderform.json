@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "main": {
+      "type": "order-form",
+      "settings": {
+        "show_quantity": true,
+        "show_remaining": true,
+        "grid_setting_medium": 1,
+        "grid_setting_small": 2,
+        "product_limit": 36,
+        "enable_layout_toggle": false,
+        "product_form": true,
+        "collection_sorting": true,
+        "hide_sidebar": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,412 @@
+{% style %}
+  form {
+    margin-bottom: 5px !important;
+  }
+  .product__form__outer {
+    margin-bottom: 0px !important;
+  }
+  .quantity__button--plus-fixed {
+    right: 0;
+}
+    .quantity__wrapper{
+    margin: 4% 0 4% 0;
+  }
+{% endstyle %}
+
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+
+{% if block.settings.info_page != blank %}
+  {%- capture size_translation -%}{{ 'general.size_chart.size' | t }}{%- endcapture -%}
+  {%- liquid
+    assign size_chart_index = -1
+    assign size_translation = size_translation | lstrip | rstrip | downcase
+    for option in product.options
+      assign option_san = option | lstrip | rstrip | downcase
+      if option_san contains size_translation
+        assign size_chart_index = forloop.index0
+      endif
+    endfor
+    assign size_page = pages[block.settings.info_page] 
+
+    assign action_style = 'product__info__link--inline'
+    if size_chart_index == -1
+      assign action_style = 'product__info__link'
+    endif
+  -%}
+{% endif %}
+{% capture size_chart %}
+  {% if block.settings.info_page != blank %}
+    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ block.id }}="size-{{ block.id }}">
+      {{ size_page.title }}
+    </a>
+    <div class="modal micromodal-slide" id="size-{{ block.id }}" data-modal aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+        <div class="modal__container modal__container--inline"
+          data-modal-content
+          role="dialog"
+          aria-modal="true"
+          aria-label="{{ size_page.title }}">
+          <div class="rte">{{ size_page.content }}</div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+  
+
+<div class="product__form__outer {{ buybutton_class }}">
+
+  
+  {% form 'product', product, data-product-form: '', data-product-handle: product.handle, class: 'smt-form'  %}
+
+
+  
+    {% comment %} The input with name="id" submits to cart {% endcomment %} 
+    <input class="mainProdId" type="hidden" name="id" value="{{ current_variant.id }}">
+
+    {% comment %} Shop pay split payment terms {% endcomment %} 
+    <div class="shop-pay-terms">
+      {{ form | payment_terms }}
+    </div>
+
+    {% unless product.has_only_default_variant %}
+      <div class="form__selectors">
+        {% for option in product.options_with_values %}
+          {%- if settings.swatches_enable -%}
+            {% comment %} Determine if current option matches swatch handle translations {% endcomment %}
+            {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
+            {%- assign translation_array = swatch_translation | append:',' | split: "," | uniq -%}
+            {%- assign is_swatch_option = false -%}
+            {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
+            {%- for translation in translation_array -%}
+              {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
+              {%- if translation_handle == option_handle -%}
+                {%- assign is_swatch_option = true -%}
+                {% break %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
+            {%- if block.settings.variant_form == "button" or is_swatch_option -%}
+              {% assign current_value = current_variant.options[forloop.index0] %}
+              <fieldset class="radio__fieldset">
+                <legend class="radio__legend">
+                  <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+                  <span data-option-value>{{ current_value }}</span>
+                  {%- if size_chart_index == forloop.index0 -%}
+                    {{ size_chart }}
+                  {%- endif -%}
+                </legend>
+
+              
+
+                {% for value in option.values %}
+                  {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
+
+                  {%- if is_swatch_option -%}
+                    <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
+                      <input type="radio"
+                          name="options[{{ option.name | escape_once }}]"
+                          value="{{ value | escape_once }}" 
+                          id="{{ input_id }}"
+                          {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}" data-swatch="{{ value | escape_once }}">
+                        <span class="visually-hidden">{{ value | escape_once }}</span>
+                      </label>
+                    </span>
+
+                  {%- else -%}
+                    {% comment %} radio button {% endcomment %}
+                    <span class="radio__button">
+                      <input
+                        type="radio"
+                        name="options[{{ option.name | escape_once }}]"
+                        value="{{ value | escape_once }}" id="{{ input_id }}"
+                        {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}">
+                        <span>{{ value | escape_once }}</span>
+                      </label>
+                    </span>
+                  {%- endif -%}
+
+                {% endfor %}
+              </fieldset>
+            {%- else -%}
+              <fieldset class="select__fieldset">
+                {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
+                <label class="select__label" for="{{ input_id }}">
+                  {{ option.name }}
+                </label>
+                <select class="product__form__select"
+                  id="{{ input_id }}"
+                  name="options[{{ option.name | escape_once }}]">
+                  {% for value in option.values %}
+                    <option
+                      value="{{ value | escape_once }}"
+                      {% if option.selected_value == value %} selected="selected"{% endif %}>
+                      {{ value | escape_once }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </fieldset>
+            {%- endif -%}
+          </div>
+        {% endfor %}
+      </div>
+    {% endunless %}
+
+    <noscript>
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' }}">
+        {% for variant in product.variants %}
+          <option
+            {% if variant == current_variant %}selected="selected"{% endif %}
+            {% unless variant.available %}disabled="disabled"{% endunless %}
+            value="{{ variant.id }}">
+              {{ variant.title }}
+          </option>
+        {% endfor %}
+      </select>
+    </noscript>
+   
+    <p class="line-item-property\_\_field"> <label for="custom\_photo">Include artwork here (JPG or PNG)</label> 
+      <input required class="required gc_img_upload" id="custom\_photo" type="file" name="properties[Photo]"/> 
+    </p>
+                                                                                                            
+    {%- if product.selling_plan_groups.size > 0 -%}
+      {% if block.settings.subscriptions_enable_selectors %}
+        {% render 'subscription-form', product: product %}
+      {%- endif -%}
+      {% comment %} Delete the following line to block the theme from updating subscription prices {% endcomment %} 
+      <span data-subscription-watch-price></span>
+    {%- endif -%}
+
+    {% if block.settings.show_quantity %}
+       <span style="font-size:.9rem; font-weight:1.5rem;">QTY:</span>
+      <div class="quantity__wrapper" data-quantity-selector style="display: inline-block; min-width: 120px">
+      <button type="button" class="quantity__button quantity__button--minus-fixed change_price_func">&minus;</button>
+        <input data-quantity-input
+          readonly
+          aria-label="{{ 'cart.label.quantity' | t }}"
+          class="quantity__input custom__qi change_price_func"
+          type="number"
+          min="{{ product.metafields.custom.plquant1 }}"
+          max="10000000"
+          size="8"
+          pattern="[0-9]*"
+          name="quantity"
+          value="{{ product.metafields.custom.plquant1 }}"/>
+      <button type="button" class="quantity__button quantity__button--plus-fixed change_price_func">+</button>
+      </div>
+      <div class="price_per_unit" style="display: inline-block;">
+        <span id="ppu_span">{{ current_variant.price | money }}</span>
+        <span> Per Unit</span>
+      
+      </div>
+    {% endif %}
+
+
+    {%- if block.settings.show_remaining or size_chart_index == -1 -%}
+    
+
+        {%- if size_chart_index == -1 -%}
+          {{ size_chart }}
+        {%- endif -%}
+
+        {%- if block.settings.show_remaining -%}
+          {%- assign max_inventory = 10 -%}
+          {%- assign show_remaining_class = '' -%}
+          {%- assign current_inventory = 0 -%}
+
+          {%- if current_variant.inventory_policy == 'deny' and current_variant.inventory_management -%}
+            {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= max_inventory -%}
+              {%- assign show_remaining_class = 'variant__countdown--show' -%}
+              {%- assign current_inventory = current_variant.inventory_quantity -%}
+            {%- endif -%}
+          {%- endif -%}
+
+          {% capture inventory %}
+            <span data-remaining-max="{{ max_inventory }}" data-remaining-count>{{ current_inventory | default: 0 }} </span>
+          {% endcapture %}
+
+          <script data-product-remaining-json type="application/json">
+            {
+              {%- for variant in product.variants -%}
+                {%- assign maximum = 11 -%}
+                {%- assign quant = maximum | plus: 10 -%}
+                {%- if variant.inventory_policy == 'deny' and variant.inventory_management -%}
+                  {%- assign quant = variant.inventory_quantity | at_most: maximum -%}
+                {%- endif -%}
+                "{{ variant.id | json }}": "{{ quant | json }}"{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            }
+          </script>
+
+        {%- endif -%}
+
+      </div>
+    {%- endif -%}
+    {% endform %}
+
+   <input class="lid_check change_price_func" type="checkbox" name="check" > Add Magnetic Lids </input><br>
+    <input class="LidId" type="hidden" name="id" value="{{ all_products['small-rolling-tray-lid'].variants[0].id }}">
+   <div class="tray-type-select" style="display: none">
+      <select class="change_price_func lid_select">
+            <option class="standard_lid_option1 standard_option" data-prod-id="{{ all_products['small-rolling-tray-lid'].variants[0].id }}" value="{{ all_products['small-rolling-tray-lid'].variants[0].price }}">Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[0].price | money }} each)</option>
+            <option class='3d_option' data-prod-id="{{ all_products['small-3d-rolling-tray-lid'].variants[0].id }}" value="{{ all_products['small-3d-rolling-tray-lid'].variants[0].price }}">3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[0].price | money }} each)</option>
+      </select>
+   </div>
+
+
+  
+    <div class="product__submit" style="margin-top: 10%">
+      <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
+      {% assign button_text = 'products.product.add_to_cart' | t %}
+      {% if product.tags contains '_preorder' %}
+        {% assign button_text =  'products.product.pre_order' | t %}
+      {% endif %}
+      {% unless current_variant.available %}
+        {% assign button_text =  'products.product.sold_out' | t %}
+      {% endunless %}
+
+
+      <div class="product__submit__buttons">
+        <button
+          name="add"
+          class="btn--outline btn--full btn--primary uppercase btn--add-to-cart btn--custom-smt"
+
+          {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+          <span data-add-to-cart-text>
+            {{ button_text }}
+          </span>
+          <span>•</span>
+          <span id="dynamic_price_span" data-button-price>{{ current_variant.price | times: product.metafields.custom.plquant1  | money }}</span>
+        </button>
+
+        {% if buybutton_setting %}
+          <div class="product__submit__quick">
+            {{ form | payment_button }}
+          </div> 
+        {% endif %}
+
+      </div>
+    </div>
+
+</div>
+
+
+
+
+<script>
+
+$(document).on("click", ".quantity__button--plus-fixed", function() {
+  const quantInput = $(".custom__qi");
+  const incrementer = parseInt({{ product.metafields.custom.plquant1 }})
+  console.log("skeep")
+  quantInput.val(incrementer + parseInt(quantInput.val())).trigger('change')
+  
+})
+
+$(document).on("click", ".quantity__button--minus-fixed", function() {
+  const quantInput = $(".custom__qi");
+  const numInput = parseInt(quantInput.val())
+  const decrementer = parseInt({{ product.metafields.custom.plquant1 }})
+  console.log(decrementer, numInput)
+  if (numInput > decrementer){
+  quantInput.val(numInput - decrementer ).trigger('change') 
+  } else{
+  return
+  }
+})
+
+
+  
+
+
+$(document).on("change",".change_price_func", function(){
+  const lid_check = $(".lid_check").is(":checked");
+  const price_text = $("#dynamic_price_span");
+  const standard_lid_name1 = {{ all_products['small-rolling-tray-lid'].variants[2].price }}
+  const per_unit_p = $("#ppu_span");
+  const qi_input_val = parseInt($(".custom__qi").val()); 
+  const lid_select = parseInt($(".lid_select").find(":selected").attr("value"));
+  const lidPrice = lid_check ? lid_select : parseInt(0);
+  let ptc1 = parseInt('{{ product.metafields.custom.plprice1 }}');
+  let qtc1 = parseInt('{{ product.metafields.custom.plquant1 }}');
+  let ptc2 = parseInt('{{ product.metafields.custom.plprice2 }}');
+  let qtc2 = parseInt('{{ product.metafields.custom.plquant2 }}');
+  let ptc3 = parseInt('{{ product.metafields.custom.plprice3 }}');
+  let qtc3 = parseInt('{{ product.metafields.custom.plquant3 }}');
+  
+ console.log("standard lid name", standard_lid_name1)
+
+  if (lid_check){
+    $(".tray-type-select").css("display", "block")
+  } else {
+    $(".tray-type-select").css("display", "none")
+  }
+
+
+ if (qi_input_val >= qtc1 && qi_input_val < qtc2){
+    // $(".standard_option").replaceWith("<option class='standard_lid_option1 standard_option' value='{{ all_products['small-rolling-tray-lid'].variants[0].price }}'>Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[0].price | money }} each)</option>")
+    // $(".3d_option").replaceWith("<option class='3d_option' value='{{ all_products['small-3d-rolling-tray-lid'].variants[0].price }}'>3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[0].price | money }} each)</option>")
+    $(".standard_option").attr("value", "{{ all_products['small-rolling-tray-lid'].variants[0].price }}")
+    $(".standard_option").attr("data-prod-id", "{{ all_products['small-rolling-tray-lid'].variants[0].id }}")
+    $(".standard_option").html("Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[0].price | money }} each)")
+    $(".3d_option").attr("value", "{{ all_products['small-3d-rolling-tray-lid'].variants[0].price }}")
+    $(".3d_option").attr("data-prod-id", "{{ all_products['small-3d-rolling-tray-lid'].variants[0].id }}")
+    $(".3d_option").html("3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[0].price | money }} each)")
+    let tot_price = qi_input_val * (ptc1 + lidPrice);
+    per_unit_p.html(Shopify.formatMoney(ptc1, theme.strings.moneyFormat ));
+    price_text.html(Shopify.formatMoney(tot_price, theme.strings.moneyFormat ));
+    console.log("selected price", lidPrice)
+  };
+
+if (qi_input_val >= qtc2 && qi_input_val < qtc3){
+    // $(".standard_option").replaceWith("<option class='standard_lid_option2 standard_option' value='{{ all_products['small-rolling-tray-lid'].variants[1].price }}'>Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[1].price | money }} each )</option>")
+    // $(".3d_option").replaceWith("<option class='3d_option' value='{{ all_products['small-3d-rolling-tray-lid'].variants[1].price }}'>3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[1].price | money }} each)</option>")
+    $(".standard_option").attr("value", "{{ all_products['small-rolling-tray-lid'].variants[1].price }}")
+    $(".standard_option").attr("data-prod-id", "{{ all_products['small-rolling-tray-lid'].variants[1].id }}")
+    $(".standard_option").html("Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[1].price | money }} each)")
+    $(".3d_option").attr("value", "{{ all_products['small-3d-rolling-tray-lid'].variants[1].price }}")
+    $(".3d_option").attr("data-prod-id", "{{ all_products['small-3d-rolling-tray-lid'].variants[1].id }}")
+    $(".3d_option").html("3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[1].price | money }} each)")
+    let tot_price = qi_input_val * (ptc2 + lidPrice);
+    per_unit_p.html(Shopify.formatMoney(ptc2, theme.strings.moneyFormat ));
+    price_text.html(Shopify.formatMoney(tot_price, theme.strings.moneyFormat ));
+    console.log("selected price", lidPrice)
+  };
+
+if (qi_input_val >= qtc3){
+    // $(".standard_option").replaceWith("<option class='standard_lid_option3 standard_option' value='{{ all_products['small-rolling-tray-lid'].variants[2].price }}'>Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[2].price | money }} each )</option>")
+    // $(".3d_option").replaceWith("<option class='3d_option' value='{{ all_products['small-3d-rolling-tray-lid'].variants[2].price }}'>3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[2].price | money }} each)</option>")
+    $(".standard_option").attr("value", "{{ all_products['small-rolling-tray-lid'].variants[2].price }}")
+    $(".standard_option").attr("data-prod-id", "{{ all_products['small-rolling-tray-lid'].variants[2].id }}")
+    $(".standard_option").html("Standard Lid (+ {{ all_products['small-rolling-tray-lid'].variants[2].price | money }} each)")
+    $(".3d_option").attr("value", "{{ all_products['small-3d-rolling-tray-lid'].variants[2].price }}")
+    $(".3d_option").attr("data-prod-id", "{{ all_products['small-3d-rolling-tray-lid'].variants[2].id }}")
+    $(".3d_option").html("3D Lid (+ {{ all_products['small-3d-rolling-tray-lid'].variants[2].price | money }} each)")
+    let tot_price = qi_input_val * (ptc3 + lidPrice);
+    per_unit_p.html(Shopify.formatMoney(ptc3, theme.strings.moneyFormat ));
+    price_text.html(Shopify.formatMoney(tot_price, theme.strings.moneyFormat ));
+    console.log("selected price", lidPrice)
+  };
+
+  const lidId = parseInt($(".lid_select").find(":selected").attr("data-prod-id"));
+  console.log("lidid", lidId)
+    $(".LidId").attr("value", lidId)
+  
+   })
+
+</script>
+
+
+
+
+
+
+
+

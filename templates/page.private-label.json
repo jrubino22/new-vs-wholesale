@@ -1,0 +1,212 @@
+{
+  "sections": {
+    "1636577780515231ae": {
+      "type": "section-hero",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/VSyndicate_WebsiteBanner_PrivateLabeling_1600x_e50f4df0-4ec3-48de-ae65-009a18eba473.jpg",
+        "bg_position": "center-center",
+        "height": "use_image",
+        "overlay_opacity": 15,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "main": {
+      "type": "page",
+      "settings": {
+        "kicker": "",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    },
+    "166361140986128590": {
+      "type": "section-double",
+      "blocks": {
+        "e182318d-aba0-435f-9281-8d188eb98f4d": {
+          "type": "text",
+          "settings": {
+            "kicker": "Private Label Gallery",
+            "title": "",
+            "text": "<p>Check out our private label gallery to view some awesome custom projects we have completed<\/p>",
+            "text_size": 2,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--neutral",
+            "bg_color": "#ffffff"
+          }
+        },
+        "16636114091f385d77-1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/HUF_Gold_Grinder_Bench_2.jpg",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "View Gallery",
+            "link": "shopify:\/\/pages\/private-label-gallery",
+            "button_color": "btn--secondary",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "e182318d-aba0-435f-9281-8d188eb98f4d",
+        "16636114091f385d77-1"
+      ],
+      "settings": {
+        "height": "use_screen_one_fifth",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "88c0fdd4-cd17-4361-8ce3-5b54c8e7ed5e": {
+      "type": "section-richtextprivatelabel",
+      "disabled": true,
+      "settings": {
+        "kicker": "Introducing",
+        "title": "",
+        "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+        "text_size": 2,
+        "text_columns": 1,
+        "align_text": "text-left",
+        "button_text": "fd",
+        "button_url": "",
+        "button_color": "btn--neutral",
+        "button_style": "caps--link",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    },
+    "165047261849539e24": {
+      "type": "section-richtext",
+      "settings": {
+        "kicker": "",
+        "title": "",
+        "text": "<p>Click the button below to view our full private label catalog<\/p>",
+        "text_size": 2,
+        "text_columns": 1,
+        "align_text": "text-center",
+        "button_text": "View Catalog",
+        "button_url": "https:\/\/wholesale.vsyndicate.com\/pages\/private-label-price-sheet",
+        "button_color": "btn--secondary",
+        "button_style": "btn btn--long uppercase",
+        "height": "margin--large",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    },
+    "1660597926fda95bcf": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Private Label Products",
+        "show_quantity": true,
+        "show_remaining": true,
+        "product_form": false,
+        "soldouts": true,
+        "collection": "custom-and-private-label",
+        "grid": 6,
+        "rows": 8,
+        "bg": "section bg--neutral",
+        "show_view_all": false
+      }
+    },
+    "77c51352-4129-4a6f-a83f-497b8441ec60": {
+      "type": "section-richtext",
+      "disabled": true,
+      "settings": {
+        "kicker": "Introducing",
+        "title": "",
+        "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+        "text_size": 2,
+        "text_columns": 1,
+        "align_text": "text-left",
+        "button_text": "fv",
+        "button_url": "",
+        "button_color": "btn--neutral",
+        "button_style": "caps--link",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    },
+    "cc83c272-0e95-4478-a366-b2f6437f9c60": {
+      "type": "section-richtext",
+      "disabled": true,
+      "settings": {
+        "kicker": "Introducing",
+        "title": "",
+        "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+        "text_size": 2,
+        "text_columns": 1,
+        "align_text": "text-left",
+        "button_text": "",
+        "button_url": "",
+        "button_color": "btn--neutral",
+        "button_style": "caps--link",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    },
+    "14725d18-5186-402c-be2d-caeb31464054": {
+      "type": "section-richtextprivatelabel",
+      "disabled": true,
+      "settings": {
+        "kicker": "Introducing",
+        "title": "",
+        "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+        "text_size": 2,
+        "text_columns": 1,
+        "align_text": "text-left",
+        "button_text": "fds",
+        "button_url": "",
+        "button_color": "btn--neutral",
+        "button_style": "caps--link",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "section bg--neutral"
+      }
+    }
+  },
+  "order": [
+    "1636577780515231ae",
+    "main",
+    "166361140986128590",
+    "88c0fdd4-cd17-4361-8ce3-5b54c8e7ed5e",
+    "165047261849539e24",
+    "1660597926fda95bcf",
+    "77c51352-4129-4a6f-a83f-497b8441ec60",
+    "cc83c272-0e95-4478-a366-b2f6437f9c60",
+    "14725d18-5186-402c-be2d-caeb31464054"
+  ]
+}

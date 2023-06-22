@@ -1,0 +1,496 @@
+
+
+{% capture wpd_discounted_prices %}{%- render 'wcp_discount'  wcp_discount:product , wpd_is_render:'yes' -%}{% endcapture %}
+    
+    {%- capture wcp_price -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_price' -%}{%- endcapture -%}
+    {% assign  wcp_price = wcp_price | minus: 0 %}
+    
+    {%- capture wcp_compare_at_price  -%}{%- render 'wcp_render_discount', wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_compare_at_price' -%}{%- endcapture -%}
+    {% if wcp_compare_at_price != blank %}
+        {% assign  wcp_compare_at_price = wcp_compare_at_price | minus: 0 %}
+    {% else %}
+    {% assign  wcp_compare_at_price = nil %}
+    {% endif %}
+    
+    {%- capture wcp_compare_at_price_min  -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_compare_at_price_min' -%}{%- endcapture -%}
+    {% assign  wcp_compare_at_price_min = wcp_compare_at_price_min | minus: 0 %}
+    
+    {%- capture wcp_compare_at_price_max  -%}{%- render 'wcp_render_discount', wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_compare_at_price_max' -%}{%- endcapture -%}
+    {% assign  wcp_compare_at_price_max = wcp_compare_at_price_max | minus: 0 %}
+    
+    {%- capture wcp_price_min -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_price_min' -%}{%- endcapture -%}
+    {% assign  wcp_price_min = wcp_price_min | minus: 0 %}
+    
+    {%- capture wcp_price_max -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_price_max' -%}{%- endcapture -%}
+    {% assign  wcp_price_max = wcp_price_max | minus: 0 %}
+    
+    
+    {%- capture v_discount_tag -%}{%-render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'v_discount_tag'-%}{%- endcapture -%}
+    {% assign v_discount_tag = v_discount_tag | strip %}
+    
+    {%- capture p_discount_tag -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'p_discount_tag' -%}{%- endcapture -%}
+    {% assign p_discount_tag = p_discount_tag | strip %}
+    
+    {% assign raw_set_prices = product.metafields.wcp_set_prices.wcp_set_prices %}
+    {% assign set_prices_array = blank %}
+    {% if raw_set_prices %}
+        {% assign set_prices_array = raw_set_prices | split: ',' %}
+    {% endif %}
+    
+    {%- capture wcp_discount_value -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wpd_discounted_prices, price_variable:'wcp_discount_value' -%}{%- endcapture -%}
+    
+    {% capture wcp_v_discounted_prices %}{%- render 'wcp_variant' , wcp_variant:product.selected_or_first_available_variant , set_prices_array:set_prices_array , wpd_is_render:'yes', v_discount_tag : v_discount_tag , wcp_discount_value : wcp_discount_value -%}{%- endcapture -%}
+    
+    {%- capture wcp_v_price -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wcp_v_discounted_prices, price_variable:'wcp_v_price' -%}{%- endcapture -%}
+    {% assign  wcp_v_price = wcp_v_price | minus: 0 %}
+    
+    {%- capture wcp_v_compare_at_price -%}{%- render 'wcp_render_discount' , wpd_discounted_prices:wcp_v_discounted_prices, price_variable:'wcp_v_compare_at_price' -%}{%- endcapture -%}
+    {% if wcp_v_compare_at_price != blank %}
+        {% assign  wcp_v_compare_at_price = wcp_v_compare_at_price | minus: 0 %}
+    {% else %}
+    {% assign  wcp_v_compare_at_price = nil %}
+    {% endif %}
+
+{% assign current_variant = product.variants[0] %}
+
+{%- assign buybutton_setting = block.settings.enable_payment_button -%}
+{%- if product.selling_plan_groups.size > 0 -%}
+  {% assign buybutton_setting = false -%}
+{%- endif -%}
+
+{% assign buybutton_class = '' %}
+{% if buybutton_setting %}
+  {% assign buybutton_class = 'product__form--buybutton' %}
+{% endif %}
+
+{% if block.settings.info_page != blank %}
+  {%- capture size_translation -%}{{ 'general.size_chart.size' | t }}{%- endcapture -%}
+  {%- liquid
+    assign size_chart_index = -1
+    assign size_translation = size_translation | lstrip | rstrip | downcase
+    for option in product.options
+      assign option_san = option | lstrip | rstrip | downcase
+      if option_san contains size_translation
+        assign size_chart_index = forloop.index0
+      endif
+    endfor
+    assign size_page = pages[block.settings.info_page] 
+
+    assign action_style = 'product__info__link--inline'
+    if size_chart_index == -1
+      assign action_style = 'product__info__link'
+    endif
+  -%}
+{% endif %}
+
+
+{% capture size_chart %}
+  {% if block.settings.info_page != blank %}
+    <a href="{{ size_page.url }}" class="{{ action_style }}" data-popup-{{ block.id }}="size-{{ block.id }}">
+      {{ size_page.title }}
+    </a>
+    <div class="modal micromodal-slide" id="size-{{ block.id }}" data-modal aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+        <div class="modal__container modal__container--inline"
+          data-modal-content
+          role="dialog"
+          aria-modal="true"
+          aria-label="{{ size_page.title }}">
+          <div class="rte">{{ size_page.content }}</div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<div class="product__form__outer {{ buybutton_class }}">
+  {% form 'product', product, data-product-form: '', data-product-handle: product.handle, class: 'regular_form shopify-product-form' %}
+
+    {% comment %} The input with name="id" submits to cart {% endcomment %} 
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+    {% comment %} Shop pay split payment terms {% endcomment %} 
+    <div class="shop-pay-terms">
+      {{ form | payment_terms }}
+    </div>
+  
+  
+  {% assign quantdivcoll = 1 %}
+  {% assign customerlevel = '' %}
+  
+  {% unless customer.tags contains 'no-min-case'%}
+      {% if customer.tags contains 'full-case' %}
+     {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}  
+    		{% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}  
+     {% elsif  product.metafields.my_fields.case_1 != blank %}  
+       	{% assign quantdivcoll = product.metafields.my_fields.case_1 %}  
+      {% endif %}  
+    {% endif %}
+    
+    {% if customer.tags contains 'master-distributor' %}
+      {% assign customerlevel = 'master-distributor' %}
+    {% endif %}
+    {% if customer.tags contains 'distributor' %}
+      {% assign customerlevel = 'distributor' %}
+    {% endif %}
+  {% endunless %}
+    {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}
+       {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+            {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case | divided_by: 2 %}
+         {% elsif  product.metafields.my_fields.case_1 != blank %}
+            {% assign quantdivcoll = product.metafields.my_fields.case_1 | divided_by: 2 %}
+        {% endif %}
+    {% endif %}
+ 
+  
+  
+   
+      {%- assign current_inventory = current_variant.inventory_quantity -%}
+         {% capture inventory %}
+               <span data-remaining-max="" data-remaining-count class="variant_inventory">{{ current_inventory | default: 0 }} </span>
+          {% endcapture %}
+        {% capture inventorycase %}
+               <span class="inventory_cases">{{ current_inventory | divided_by:quantdivcoll }} </span>
+  			{% assign case_count = current_inventory | divided_by:quantdivcoll %}
+          {% endcapture %}
+   <div {% if template == 'product'%} style="display:none;"{% endif %} >
+     <div class="inventory_container">         
+      <a class="show-inventory-button"><p style="font-size: 10px; color: blue;" class="show_inv constant_inv">Show Inventory</p></a>
+      <div style="display:none;" class="show_the_inventory">
+        
+      <p class="variant__countdowndt" data-remaining-wrapper >
+    {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}{{ quantdivcoll }} units per case |{% endif %}
+        {{ 'products.product.remaining_html' | t: inventory: inventory }} left in stock
+      </p>      
+      </div>
+    </div>
+  </div>
+<input type="hidden" class="collectioncase" value="{{ quantdivcoll }}">
+
+
+   
+  <input type="hidden" class="collectioncase" value="{{ quantdivcoll }}">
+
+    {% if product.has_only_default_variant %}
+  		<div class="empty-thumb-space"></div>
+  	{% else %}
+      <div class="form__selectors">
+        {% for option in product.options_with_values %}
+          {%- if settings.swatches_enable -%}
+            {% comment %} Determine if current option matches swatch handle translations {% endcomment %}
+            {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
+            {%- assign translation_array = swatch_translation | append:',' | split: "," | uniq -%}
+            {%- assign is_swatch_option = false -%}
+            {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
+            {%- for translation in translation_array -%}
+              {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
+              {%- if translation_handle == option_handle -%}
+                {%- assign is_swatch_option = true -%}
+                {% break %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          <div class="selector-wrapper js" data-split-select-wrapper data-select-label="{{ option.name }}"  data-option-position="{{ option.position }}">
+            {%- if block.settings.variant_form == "button" or is_swatch_option -%}
+              {% assign current_value = current_variant.options[forloop.index0] %}
+              <fieldset class="radio__fieldset">
+                <legend class="radio__legend">
+                  <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+                  <span data-option-value>{{ current_value }}</span>
+                  {%- if size_chart_index == forloop.index0 -%}
+                    {{ size_chart }}
+                  {%- endif -%}
+                </legend>
+
+
+                {% for value in option.values %}
+                  {% capture input_id %}{{ product.id }}-{{ block.id }}-{{ option.name | escape_once }}-{{ value | escape_once }}{% endcapture %}
+
+                  {%- if is_swatch_option -%}
+                    <span class="swatch__button" data-tooltip="{{ value | escape_once }}">
+                      <input type="radio"
+                          name="options[{{ option.name | escape_once }}]"
+                          value="{{ value | escape_once }}" 
+                          id="{{ input_id }}"
+                          {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}" data-swatch="{{ value | escape_once }}">
+                        <span class="visually-hidden">{{ value | escape_once }}</span>
+                      </label>
+                    </span>
+
+                  {%- else -%}
+                    {% comment %} radio button {% endcomment %}
+                    <span class="radio__button">
+                      <input
+                        type="radio"
+                        name="options[{{ option.name | escape_once }}]"
+                        value="{{ value | escape_once }}" id="{{ input_id }}"
+                        {%- if value == current_value -%}checked{%- endif -%}>
+                      <label for="{{ input_id }}">
+                        <span>{{ value | escape_once }}</span>
+                      </label>
+                    </span>
+                  {%- endif -%}
+
+                {% endfor %}
+              </fieldset>
+            {%- else -%}
+              <fieldset class="select__fieldset">
+                {% capture input_id %}{{product.id}}-option-{{ option.position }}{% endcapture %}
+                <label class="select__label" for="{{ input_id }}">
+                  {{ option.name }}
+                </label>
+                <select class="product__form__select"
+                  id="{{ input_id }}"
+                  name="options[{{ option.name | escape_once }}]">
+                  {% for value in option.values %}
+                    <option
+                      value="{{ value | escape_once }}"
+                            
+                            {% if formtype == 'grid' %} 
+                                  {% if forloop.first %} selected="selected"{% endif %}>
+                            {%else%}
+                                  {% if option.selected_value == value %} selected="selected"{% endif %}>
+                            {% endif %}
+                      
+                      {{ value | escape_once }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </fieldset>
+            {%- endif -%}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <noscript>
+      <select name="id" class="no-js" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' }}">
+        {% for variant in product.variants %}
+          <option
+            {% if variant == current_variant %}selected="selected"{% endif %}
+            {% unless variant.available %}disabled="disabled"{% endunless %}
+            value="{{ variant.id }}" data-value="{{ variant.inventory_quantity }}">
+              {{ variant.title }}
+          </option>
+        {% endfor %}
+      </select>
+    </noscript>
+  
+      <div class="quantity__wrapper" data-quantity-selector  {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}style="display:none;"{% endif%}>
+        <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
+        <input data-quantity-input
+          class="quantity__input"
+          type="number"
+          min="1"
+          size="4"
+          pattern="[0-9]*"
+          name="quantity"
+               
+
+               
+               {%- if customerlevel == 'distributor' or customerlevel == 'master-distributor'  -%}   
+               
+                  {%- if current_variant.metafields.my_fields.variant_quantity_case != blank -%}
+               
+                      value="{{current_variant.metafields.my_fields.variant_quantity_case | divided_by: 2 }}"
+               
+                 {%- elsif product.metafields.my_fields.case_1 !=blank -%}
+               
+                      value="{{ product.metafields.my_fields.case_1 | divided_by: 2 }}"
+               
+                 {%- endif -%}
+               
+               {%- else -%}     
+               
+                	  value="1"
+               
+               {% endif %}
+               
+         />
+        <button class="quantity__button quantity__button--plus" data-increase-quantity>+</button>
+      </div>
+  
+    <select name="qunty_vl" class="no-js-qt" data-product-select aria-label="{{ product.options_with_values | map: 'name' | uniq | join: ', ' }}" style="display:none;">
+        {% for variant in product.variants %}
+          <option
+                  
+            {% if variant.metafields.my_fields.variant_quantity_case != blank %}
+                  
+                  {% if customerlevel == 'distributor' or customerlevel == 'master-distributor' %}
+                  	data-caseqty="{{ variant.metafields.my_fields.variant_quantity_case | divided_by: 2 }}"
+                  {% else %}
+                  	data-caseqty="{{ variant.metafields.my_fields.variant_quantity_case }}"
+                  {% endif %}
+                  
+                  
+            {% elsif product.metafields.my_fields.case_1 != blank %}
+                
+                  {% if customerlevel == 'distributor' or customerlevel == 'master-distributor'  %}
+                  	data-caseqty="{{ product.metafields.my_fields.case_1 | divided_by: 2 }}"
+                  {% else %}
+                	data-caseqty="{{ product.metafields.my_fields.case_1 }}"
+                  {% endif %}
+                  
+            {% endif %}    
+                  
+            value="{{ variant.id }}" data-value="{{ variant.inventory_quantity }}" data-price="{{ variant.price | money_without_currency }}">
+              {{ variant.title }}
+          </option>
+        {% endfor %}
+      </select>
+
+    {%- if product.selling_plan_groups.size > 0 -%}
+      {% if block.settings.subscriptions_enable_selectors %}
+        {% render 'subscription-form', product: product %}
+      {%- endif -%}
+      {% comment %} Delete the following line to block the theme from updating subscription prices {% endcomment %} 
+      <span data-subscription-watch-price></span>
+    {%- endif -%}
+   
+
+ 
+   {% if customerlevel == 'distributor' or customerlevel == 'master-distributor' %}
+ 
+  <div class="quanity-selecter-container">
+    {% comment %}
+    {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+    
+      {{ current_variant.metafields.my_fields.msrp }}
+    
+    {% elsif product.metafields.my_fields.case_1 != blank %}
+    
+      {{ variant.metafields.my_fields.msrp }}
+    
+    {% endif %}
+
+     {% endcomment %}
+    
+        <div class="variant_level_opt" data-count="{{case_count}}">
+
+          <div class="quantity__wrapper casequantitydata" >
+            <button class="quantity__button_case quantity__button--minus-case" >−</button>
+            <input  class="quantity__input_case" type="number" min="1" max="{{ quantdivcoll }}" size="4" pattern="[0-9]*" name="quantityt" value="1">
+            <button class="quantity__button_case quantity__button--plus-case" >+</button>
+          </div>
+
+        </div>
+
+       
+            {% if current_variant.metafields.my_fields.variant_quantity_case != blank  or  product.metafields.my_fields.case_1 != blank %}
+              <div class="qtywithcase" data-caseqty="{{quantdivcoll}}">
+                Unit quantity: <span>{{quantdivcoll}}</span>
+              </div>
+            {% endif %}
+        
+    
+      </div>
+
+  	{% endif%}
+  
+    <input type="hidden" class="casestt" value="{{ quantdivcoll }}" data-quantity="{{ current_inventory | divided_by:quantdivcoll }}">
+  
+    {%- if block.settings.show_remaining or size_chart_index == -1 or show_remaining -%}
+  
+      <div class="product__button__meta">
+
+        {%- if size_chart_index == -1 -%}
+          {{ size_chart }}
+        {%- endif -%}
+        {%- if block.settings.show_remaining or show_remaining -%}
+          {%- assign max_inventory = 1000000 -%}
+          {%- assign show_remaining_class = '' -%}
+          {%- assign current_inventory = 0 -%}
+          {%- if current_variant.inventory_policy == 'deny' and current_variant.inventory_management -%}
+            {%- if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= max_inventory -%}
+              {%- assign show_remaining_class = 'variant__countdown--show' -%}
+              {%- assign current_inventory = current_variant.inventory_quantity -%}
+            {%- endif -%}
+          {%- endif -%}
+          {% capture inventory %}
+               <span  class= "varaintct" data-remaining-max="{{ max_inventory }}" data-remaining-count>{{ current_inventory | default: 0 }} </span>
+          {% endcapture %}
+        {% capture inventorycase %}
+               <span class="inventory_cases">{{ current_inventory | divided_by:quantdivcoll }} </span>
+          {% endcapture %}
+
+          <p class="variant__countdown {{ show_remaining_class }}" data-remaining-wrapper>
+            {{ 'products.product.remaining_html' | t: inventory: inventory }} {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %} ({{ inventorycase }} cases) {% endif %} left in stock
+          </p>
+
+          <script data-product-remaining-json type="application/json">
+            {
+              {%- for variant in product.variants -%}
+                {%- assign maximum = 11 -%}
+                {%- assign quant = maximum | plus: 10 -%}
+                {%- if variant.inventory_policy == 'deny' and variant.inventory_management -%}
+                  {%- assign quant = variant.inventory_quantity  -%}
+                {%- endif -%}
+                "{{ variant.id | json }}": "{{ quant | json }}"{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            }
+          </script>
+
+        {%- endif -%}
+
+      </div>
+    {%- endif -%}
+  
+    <div class="product__submit">
+
+      <div data-product-add-popdown-wrapper class="product-add-popdown"></div>
+
+      {% assign button_text = 'products.product.add_to_cart' | t %}
+      {% if product.tags contains '_preorder' %}
+        {% assign button_text =  'products.product.pre_order' | t %}
+      {% endif %}
+      {% unless current_variant.available %}
+        {% assign button_text =  'products.product.sold_out' | t %}
+      {% endunless %}
+
+      <div class="product__submit__buttons{% if case_count and  case_count == 0 %} disabled{% endif%}">
+        <button
+          
+           
+                
+          type="submit"
+          name="add"
+          class="btn--outline btn--full btn--primary uppercase btn--add-to-cart"
+          data-add-to-cart
+          {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+          <div data-add-to-cart-text>
+            {{ button_text }}
+          </div>
+          
+          <div>•</div>
+          <div data-button-price class="currency_price_wcp">{{ wcp_v_price | money }}</div>
+        </button>
+
+        {% if buybutton_setting %}
+          <div class="product__submit__quick">
+             {%- unless customer.tags contains p_discount_tag or customer.tags contains v_discount_tag -%} 
+            {%- if product.selected_or_first_available_variant.price != wcp_v_price -%}<div style="display:none">{%- endif -%}{{ form | payment_button }}{%- if product.selected_or_first_available_variant.price != wcp_v_price -%}</div>{%- endif -%}        
+          {%- endunless -%}
+          </div> 
+        {% endif %}
+
+      </div>
+    </div>
+  {% endform %}
+</div>
+
+<div class="product__price__main price-container" data-price-wrapper>
+    <span>From</span> 
+    <span data-product-price></span>
+    <span data-compare-text></span>
+    {% if wcp_v_compare_at_price > wcp_v_price %}<span data-compare-price  class="product__price--sale compare-at">{{ wcp_v_compare_at_price | money }}</span>{% endif %}
+</div>
+
+
+{%- assign wcp_prd_var = product -%}
+{%- unless wcp_prd_var == empty -%}
+            <script type='application/json' class='{%- for wcp_v in wcp_prd_var.variants -%} wcp_json_{{wcp_v.id}} {%- endfor -%} wcp_json_{{ wcp_prd_var.id }} wcp_json' id='wcp_json_{{ wcp_prd_var.id }}' > 
+                {%- render 'wcp_product_json' with wcp_prd_var -%}
+            </script>
+{%- endunless -%}
