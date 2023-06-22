@@ -51,7 +51,7 @@
     {% assign  wcp_v_compare_at_price = nil %}
     {% endif %}
 
-{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign current_variant = product.variants[0] %}
 
 {%- assign buybutton_setting = block.settings.enable_payment_button -%}
 {%- if product.selling_plan_groups.size > 0 -%}
@@ -119,29 +119,30 @@
   {% assign quantdivcoll = 1 %}
   {% assign customerlevel = '' %}
   
-
-    {% if customer.tags contains 'full-case' %}
-   {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}  
-  		{% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}  
-   {% elsif  product.metafields.my_fields.case_1 != blank %}  
-     	{% assign quantdivcoll = product.metafields.my_fields.case_1 %}  
-    {% endif %}  
-  {% endif %}
-  
-  {% if customer.tags contains 'master-distributor' %}
-    {% assign customerlevel = 'master-distributor' %}
-  {% endif %}
-  {% if customer.tags contains 'distributor' %}
-    {% assign customerlevel = 'distributor' %}
-  {% endif %}
-  {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}
-     {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
-          {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case | divided_by: 2 %}
-       {% elsif  product.metafields.my_fields.case_1 != blank %}
-          {% assign quantdivcoll = product.metafields.my_fields.case_1 | divided_by: 2 %}
-      {% endif %}
-  {% endif %}
-  
+  {% unless customer.tags contains 'no-min-case'%}
+      {% if customer.tags contains 'full-case' %}
+     {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}  
+    		{% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case %}  
+     {% elsif  product.metafields.my_fields.case_1 != blank %}  
+       	{% assign quantdivcoll = product.metafields.my_fields.case_1 %}  
+      {% endif %}  
+    {% endif %}
+    
+    {% if customer.tags contains 'master-distributor' %}
+      {% assign customerlevel = 'master-distributor' %}
+    {% endif %}
+    {% if customer.tags contains 'distributor' %}
+      {% assign customerlevel = 'distributor' %}
+    {% endif %}
+  {% endunless %}
+    {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}
+       {% if current_variant.metafields.my_fields.variant_quantity_case != blank %}
+            {% assign quantdivcoll = current_variant.metafields.my_fields.variant_quantity_case | divided_by: 2 %}
+         {% elsif  product.metafields.my_fields.case_1 != blank %}
+            {% assign quantdivcoll = product.metafields.my_fields.case_1 | divided_by: 2 %}
+        {% endif %}
+    {% endif %}
+ 
   
   
    
@@ -153,27 +154,21 @@
                <span class="inventory_cases">{{ current_inventory | divided_by:quantdivcoll }} </span>
   			{% assign case_count = current_inventory | divided_by:quantdivcoll %}
           {% endcapture %}
-  
-  <div class="inventory_container">        	
-			<a class="show-inventory-button"><p style="font-size: 10px; color: blue;">Show Inventory</p></a>
-        	
-          <p class="variant__countdowndt show_the_inventory" data-remaining-wrapper {% if template == 'product'%} style="display:none;"{% endif %}>
-            {{ 'products.product.remaining_html' | t: inventory: inventory }} {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}({{ inventorycase }} cases){% endif %} left in stock
-          </p>          
+   <div {% if template == 'product'%} style="display:none;"{% endif %} >
+     <div class="inventory_container">         
+      <a class="show-inventory-button"><p style="font-size: 10px; color: blue;" class="show_inv constant_inv">Show Inventory</p></a>
+      <div style="display:none;" class="show_the_inventory">
+        
+      <p class="variant__countdowndt" data-remaining-wrapper >
+    {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}{{ quantdivcoll }} units per case |{% endif %}
+        {{ 'products.product.remaining_html' | t: inventory: inventory }} left in stock
+      </p>      
+      </div>
+    </div>
   </div>
-   
-  <input type="hidden" class="collectioncase" value="{{ quantdivcoll }}">
-  
-  <script>
-    $(document).ready(function() {
-      	$('.show_the_inventory').hide();
-    });
-    
-    $('.show-inventory-button').click(function() {
-        $(this).closest('.inventory_container').find('.show_the_inventory').show();
-        $(this).closest('.inventory_container').find('.show-inventory-button').hide();
-    }); 
-  </script>
+<input type="hidden" class="collectioncase" value="{{ quantdivcoll }}">
+
+
    
   <input type="hidden" class="collectioncase" value="{{ quantdivcoll }}">
 
@@ -283,7 +278,7 @@
       </select>
     </noscript>
   
-      <div class="quantity__wrapper" data-quantity-selector  {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}style="display:none;"{% endif%}>
+      <div class="quantity__wrapper" data-quantity-selector  {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}style="display:none;"{% endif%}>
         <button class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
         <input data-quantity-input
           class="quantity__input"
@@ -356,7 +351,7 @@
    
 
  
-   {% if customer.tags contains 'distributor' or customer.tags contains 'master-distributor' %}
+   {% if customerlevel == 'distributor' or customerlevel == 'master-distributor' %}
  
   <div class="quanity-selecter-container">
     {% comment %}
@@ -421,7 +416,7 @@
           {% endcapture %}
 
           <p class="variant__countdown {{ show_remaining_class }}" data-remaining-wrapper>
-            {{ 'products.product.remaining_html' | t: inventory: inventory }} {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %} ({{ inventorycase }} cases) {% endif %} left in stock
+            {{ 'products.product.remaining_html' | t: inventory: inventory }} {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %} ({{ inventorycase }} cases) {% endif %} left in stock
           </p>
 
           <script data-product-remaining-json type="application/json">

@@ -8,7 +8,7 @@
         "image_retail": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
         "image_distro": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
         "image_master": "shopify:\/\/shop_images\/Wholesale_Banner_511_2.png",
-        "bg_position": "center-center",
+        "bg_position": "center-top",
         "height": "use_image",
         "overlay_opacity": 15,
         "overlay_color": "#000000",

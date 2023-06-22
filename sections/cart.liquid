@@ -203,6 +203,7 @@
           </div>
           
           <script>
+        {% unless customer.tags contains 'no-min-order' %}
 //             retail minimums
           {% unless customer.tags contains "retail-reorder" %}
               {% assign minLimit = settings.retail %}
@@ -252,6 +253,7 @@
             {% assign minLimit = settings.masterreorder40k %}
             window.customerType = 'master-reorder-40k';
           {% endif %}
+        {% endunless %}
           </script>
           
               <div class="checkout_wrapper" data-formated-limit="{{ minLimit }}" data-limit="{{ minLimit | replace: ' ','' | replace: '$','' | replace: ',','' }}" style="display: none;" >
