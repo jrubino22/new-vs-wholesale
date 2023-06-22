@@ -1,0 +1,215 @@
+{% style %}
+.div1 {
+  --border-color: ${tier};
+  background: linear-gradient(to bottom right, var(--gradient-color-1), var(--gradient-color-2));
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  animation: pulse 2s ease-in-out 1;
+  border-radius: 10px;
+  border: 1.2rem solid var(--border-color);
+  max-width: max-content;
+  padding: 1.2rem 1.2rem 0px 1.2rem;
+  color: white;
+  text-align: left;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.div1--red {
+  --gradient-color-1: #e14fad;
+  --gradient-color-2: #f9d423;
+}
+
+.div1--blue {
+  --gradient-color-1: #66ffcc;
+  --gradient-color-2: #595959;
+/*      */
+}
+
+.div1--gold {
+  --gradient-color-1: #ffd000;
+  --gradient-color-2: #000000;
+}
+
+.div1--black {
+  --gradient-color-1: #cccccc;
+  --gradient-color-2: #000000;
+}
+  
+#member-card-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #ccc;
+}
+
+.mchead {
+  font-size: 16px
+}
+
+  
+#member-card-form label {
+  font-size: 14px;
+}
+
+#member-card-form input {
+  height: 30px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+#member-card-form input[type='submit'] {
+  background-color: #42a2e0;
+  color: #fff;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#member-card-form input[type='submit']:hover {
+  background-color: #3e8e41;
+}
+{% endstyle %}
+<div class="syndicateMember" style=" margin-right: auto; margin-left: auto;">
+</div>
+<script>
+    const thisUrl = `https://member.vsyndicate.com/api/member-email/{{ customer.email }}`
+  
+  fetch(thisUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      appendData(data);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  
+  function appendData(data) {
+    
+      const mainContainer = document.querySelector(".syndicateMember");
+          
+        if (data.length > 0) {
+        const tier = data[0].cardTier;    
+        console.log(data.length)
+        let perks = ''
+        if (tier === "None") {
+            const p = document.createElement("p");
+            p.textContent = "Spend at least $2,500 this quarter to restore membership benefits";
+            return mainContainer.appendChild(p);
+        }
+        if (tier === "Red") {
+          perks = `<li>- 10% off wholesale price</li><li>- Priority access for new products</li><li>- Free Shipping</li></ul>`
+        } else if (tier === "Blue") {
+          perks = `<li>- 15% off wholesale price</li><li>- Priority access for new products</li><li>- Free Shipping</li></ul>`
+        } else if (tier === "Gold") {
+          perks = `<li>- 20%-40% off wholesale price</li><li>- Priority access for new products</li><li>- Discounted Shipping</li></ul>`
+        } else if (tier === "Black") {
+          perks = `<li>- 25%-50% off wholesale price</li><li>- Priority access for new products</li><li>- Exclusive Pricing</li></ul>`
+        }
+       const div1 = document.createElement("div");
+        div1.classList.add("div1", `div1--${tier.toLowerCase()}`);
+        div1.style.cssText = `${tier === "Black" ? `background-color: rgba(0,0,0,.5);`: `background-color: rgba(0,0,0,0.9)`}; max-width: max-content; 
+                                padding: 1.2rem 1.2rem 0px 1.2rem;color: white;
+                                text-align: left; margin-right: auto; margin-left: auto;`
+        div1.innerHTML = `<span style='font-size: 1.2em'>Syndicate <span style='color: ${tier}'> ${tier} Card</span></span> <br> 
+                            <span style='margin-left:0px; font-size: 0.75em; margin-right: auto; float: left'>Account Number: ${data[0].accountNumber} </span> <br> <hr></hr>
+                              <span style='margin-right: 20%'><ul>Perks: ${perks} </span>`;
+          mainContainer.appendChild(div1);
+        } else{
+        const div2 = document.createElement("div");
+        div2.classList.add("div2");
+        div2.innerHTML ="<h4 class='mchead'> Register your Syndicate Insiders Club Card!</h4>" +
+              "<form id='member-card-form'>" +
+                  "<label for='member-num'>Account Number </label>" +
+            	  "<input id='member-num' style='margin-right: 5px; margin-left: 3px;' type='text' name='membership-number'>" +                  
+                  "<span class='input-group__btn'>" +
+                    "<input type='submit' value='Submit'>" +
+                  "</span>" +
+              "</form>";
+        mainContainer.appendChild(div2);
+          signUp();
+        }       		
+  }
+</script>
+<script>
+  
+ function signUp(){ 
+  const membershipForm = document.getElementById("member-card-form");
+  membershipForm.addEventListener("submit", handleFormSubmit );
+  
+  async function handleFormSubmit(event) {
+  	event.preventDefault();
+    
+    const memberNum = document.getElementById("member-num").value;
+    
+    const form = event.currentTarget;
+    const url = `https://member.vsyndicate.com/api/register/${memberNum}`;
+    
+    try{
+      	const formData = new FormData(form);
+      	const memberNumber = memberNum;
+    
+      const responseData = await postFormDataAsJson({ url, memberNum });
+      console.log({ responseData });
+      alert('You have been registered!')
+      location.reload()
+      
+    } catch(error) {
+null
+         	alert('invalid account number')
+            console.error(error)
+    }
+  }
+  
+  async function postFormDataAsJson({ url, memberNum }) {
+    
+    const formDataJsonString = JSON.stringify({
+      									customerEmail: "{{customer.email}}",
+      									shopifyCustomerId: "{{customer.id}}",
+      									accountNumber: memberNum,		
+    								});
+    console.log(formDataJsonString);
+    
+    const fetchOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: formDataJsonString,
+    };
+    
+    const response = await fetch(url, fetchOptions);
+    
+    if(!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+    return response.json();
+  }
+ }
+  
+</script>
