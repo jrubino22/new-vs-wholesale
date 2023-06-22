@@ -160,7 +160,7 @@
       <div style="display:none;" class="show_the_inventory">
         
       <p class="variant__countdowndt" data-remaining-wrapper >
-    {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}{{ quantdivcoll }} units per case |{% endif %}
+    {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}<span class="qdc-show-inv">{{ quantdivcoll }}</span> units per case |{% endif %}
         {{ 'products.product.remaining_html' | t: inventory: inventory }} left in stock
       </p>      
       </div>
