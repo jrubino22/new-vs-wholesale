@@ -1,22 +1,3 @@
-@media only screen and (min-width: 810px) {
-  .aboveHeader {
-    display: block;
-  }
-  .mobileSlider {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: 810px) {
-  .aboveHeader {
-    display: none;
-  }
-  .mobileSlider {
-    display: block;
-  }
-}
-
-
 .login-button {
  margin-bottom: 4px !important;
 }

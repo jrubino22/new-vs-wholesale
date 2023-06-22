@@ -152,8 +152,6 @@
           {% assign quantdivcoll = 1 %}
           {% assign customerlevel = '' %}
 
-        {% unless customer.tags contains 'no-min-case' %}
-
           {% if customer.tags contains 'master-distributor' %}
         
             {% assign customerlevel = 'master-distributor' %}
@@ -166,8 +164,6 @@
            {% assign customerlevel = 'distributor' %}
 
           {% endif %}
-
-        {% endunless %}
 
         {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}
         
@@ -190,7 +186,7 @@
 
         <div class="cart__items__quantity" >
           
-          {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}
+          {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}
             <div class="qtywithcase" data-caseqty="50">
               Unit quantity: <span>{{ line_item.quantity }}</span>
             </div>
@@ -252,7 +248,7 @@
           <span class="varaintct" data-remaining-max="1000000" data-remaining-count="">
             {{ line_item.variant.inventory_quantity}}
           </span> units
-          {% if customerlevel == 'master-distributor' or customerlevel == 'distributor' %}(
+          {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}(
           	<span class="inventory_cases">{{ line_item.variant.inventory_quantity | divided_by:quantdivcoll }} </span> cases) 
           {% endif%}
           left in stock

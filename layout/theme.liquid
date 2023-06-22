@@ -1,13 +1,9 @@
 <!doctype html> 
 <html class="no-js" lang="{{ request.locale.iso_code }}">
 
-  
-
   {%- assign title_override = false -%}
   {%- assign default_description = false -%}
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  {% include 'za_country_blocker' %}
+  <head>{% include 'za_country_blocker' %}{% render 'structuredDataV2' %}{% render 'SEO-Master' %}
       <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2KP7186HD3"></script>
     <script>
@@ -206,7 +202,6 @@
     {{ content_for_header }}
 
     {% include 'globo.formbuilder.scripts' %}
-    
     {% include 'wcp_hide' %}
   </head>
 
@@ -226,14 +221,14 @@
   data-section-id="{{ section.id }}"
   data-section-type="header">
       
-      <div class="aboveHeader">
+      <div class="aboveHeader" style="display: none">
         {% section 'top-menu' %}
       </div>
       
     {% section 'header' %}
       
     {% if template == 'index' or template == 'collection' or template == 'collection.grinders' or template == 'collection.rolling-trays' or template == 'collection.storage' or template == 'page.private-label' %}
-     <div class="mobileSlider">
+     <div class="mobileSlider" style="display: none">
       {% section 'mobile-slider' %}
       </div>
     {% endif %}
@@ -350,7 +345,7 @@
   {% include 'mw_fees_objects' %}
 {% comment %} Tracking script Brendon sent me {% endcomment %}
     <script> (function(ss,ex){ window.ldfdr=window.ldfdr||function(){(ldfdr._q=ldfdr._q||[]).push([].slice.call(arguments));}; (function(d,s){ fs=d.getElementsByTagName(s)[0]; function ce(src){ var cs=d.createElement(s); cs.src=src; cs.async=1; fs.parentNode.insertBefore(cs,fs); }; ce('https://sc.lfeeder.com/lftracker_v1_'+ss+(ex?'_'+ex:'')+'.js'); })(document,'script'); })('lYNOR8xOz3NaWQJZ'); </script>
-  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </body>
   
     {% if template == 'page.pl-gallery'  %}
@@ -574,22 +569,45 @@
     </script>
   {% endif %}
 
-  <script defer>
-  $(document).ready(function() {   
-    $('.show-inventory-button').click(function() {
-      var inventory = $(this).closest('.inventory_container').find('.show_the_inventory');
-      var buttonText = $(this).find('.show_inv');
-      if (inventory.is(":visible")) {
-        inventory.hide();
-        buttonText.text("Show Inventory");
-      } else {
-        inventory.show();
-        buttonText.text("Hide Inventory");
-      }
-    }); 
-  });
-</script>
-
+<!--   <script>
+          $(document).scroll(function() {
+      if ($(this).scrollTop() > 35){  
+          $('.announcement__wrapper').addClass("js_header_stuck");
+        }
+        else{
+          $('.announcement__wrapper').removeClass("js_header_stuck");
+        }
+      });
+  </script>
+  
+  <script>    
+        var lastScrollTop = 0;
+    $(window).scroll(function(event){
+       var st = $(this).scrollTop();
+       if (st > (lastScrollTop + 50)){
+           $('.header__wrapper').slideUp(200);
+       } else {
+          $('.header__wrapper').slideDown(200);
+       }
+       lastScrollTop = st;
+    });
+  </script> -->
+  
+  <script>
+    
+    $(document).ready(function(){
+        if($(window).width() > 810) {
+          $(".aboveHeader").attr('style', 'display: block');
+        }
+    })
+    
+        $(document).ready(function(){
+        if($(window).width() < 811) {
+          $(".mobileSlider").attr('style', 'display: block');
+        }
+    })
+                      
+  </script>
 
 
 </html>
