@@ -361,16 +361,7 @@
   
   <script>
 
-    ////////// show full title on hover //////////
-
-    // $(function () {
-    // $('.product__grid__title').mouseenter(function () {
-    //     $( this ).closest('.product__grid__title').removeClass('product__g2');
-    // })
-    // .mouseleave(function () {
-    //     $( this ).closest('.product__grid__title').addClass('product__g2')
-    //     });
-    // })
+    ///////////  Show/hide product title  ///////////////
 
     $(function () {
         $('.product__grid__title__main').mouseenter(function () {
@@ -392,7 +383,7 @@
          $(this).closest(".product-grid-item").find("#beep").find("div[data-variant !='"+id+"']").css("opacity","0");
        
          $(this).closest(".product-grid-item").find(".collection__image__top").css("opacity","0");  
-
+        {%- if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' -%}
         //quantity per case
          var qty = $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-caseqty");
 
@@ -428,8 +419,7 @@
        
          var totalprice=parseFloat(price)*parseInt(qty);
          totalprice=totalprice.toFixed(2);
-         console.log('$'+totalprice)
-       	console.log('qtycase', qtycase)
+
 
          $(this).closest(".product-grid-item").find(".qdc-show-inv").text(qty)
 
@@ -450,6 +440,7 @@
         //}
                    
         $(this).closest(".shopify-product-form").find(".qtywithcase span").text( parseInt(qtythis) * qty );
+         {% endif %}
     
     });
     
@@ -459,8 +450,7 @@
       var qty=$(this).closest(".shopify-product-form").find(".quantity__input_case").val(); 
       qty=parseInt(qty)+1;
       
-      
-      
+            
       var caset = $(this).closest(".shopify-product-form").find(".casestt").attr('data-quantity');
 
       
