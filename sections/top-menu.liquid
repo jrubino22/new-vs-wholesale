@@ -1,4 +1,5 @@
 {% if section.settings.enable %}
+{{ 'vs-search.css' | asset_url | stylesheet_tag }}
 
 {% capture cart_status %}
   <span class="header__cart__status">
@@ -48,13 +49,7 @@
     <a class="navtext navtext-styles" style="{% if forloop.last %} flex: 1; {% endif %}padding-left: 10px;padding-right: 10px;font-size: 14px;display: flex;align-items: center;" href="{{ link.url }}">{{ link.title }}</a>
     {% endfor %}
     
-    <a style=" background: #9a9a9a" href="{{ routes.cart_url }}" 
-       class="navlink navlink--cart" 
-       data-drawer-toggle="drawer-cart">
-      {% render 'icon-cart' %}
-      <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
-      {{ cart_status }}
-    </a>
+    {% render 'vs-search' %}
   </div>
 </div>
 {% endif %}
