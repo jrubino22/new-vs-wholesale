@@ -183,7 +183,7 @@
       "top-menu": {
         "type": "top-menu",
         "settings": {
-          "enable": false,
+          "enable": true,
           "social_icons": false,
           "telephone": "",
           "top_menu": "top-menu-bar",
