@@ -2,7 +2,16 @@
   .aboveHeader {
     display: block;
   }
+
   .mobileSlider {
+    display: none;
+  }
+
+  div#shopify-section-announcement {
+    display: none;
+  }
+
+  .medium-up-hide {
     display: none;
   }
 }
@@ -13,6 +22,10 @@
   }
   .mobileSlider {
     display: block;
+  }
+
+  .small-hide {
+    display: none
   }
 }
 
