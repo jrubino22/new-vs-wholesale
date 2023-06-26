@@ -112,7 +112,7 @@
           "main_menu_right_linklist": "mobile-menu",
           "underline_current": false,
           "enable_search": false,
-          "enable_account": false,
+          "enable_account": true,
           "use_icons": true,
           "header_sticky": "sticky",
           "transparent_home": false,
@@ -183,11 +183,11 @@
       "top-menu": {
         "type": "top-menu",
         "settings": {
-          "enable": true,
+          "enable": false,
           "social_icons": false,
           "telephone": "",
           "top_menu": "top-menu-bar",
-          "enable_account": true
+          "enable_account": false
         }
       },
       "mobile-slider": {
