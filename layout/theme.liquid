@@ -383,14 +383,12 @@
          $(this).closest(".product-grid-item").find("#beep").find("div[data-variant !='"+id+"']").css("opacity","0");
        
          $(this).closest(".product-grid-item").find(".collection__image__top").css("opacity","0");  
-        {%- if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' -%}
+        
         //quantity per case
          var qty = $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-caseqty");
 
          //quantity in stock
          var value= $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-value");
-         console.log('qty',qty)
-         console.log('vale', value)
          var qtycase = parseInt(value)/parseInt(qty);
          // qtycase=qtycase.toFixed(2);
          // qtycase=qtycase.split('.')[1];
@@ -411,7 +409,6 @@
          var qtythis = $(this).closest(".shopify-product-form").find(".quantity__input_case").val();
          var qunt=parseInt(minmul);
        	 var price = $(this).closest(".product-section").find("[data-product-price]").html();
-
          if(price){
            if(price) price=price.replace(",", "");
            if(price) price=price.replace("$", "");
@@ -420,9 +417,11 @@
          var totalprice=parseFloat(price)*parseInt(qty);
          totalprice=totalprice.toFixed(2);
 
-
+        console.log('qty', qty)
          $(this).closest(".product-grid-item").find(".qdc-show-inv").text(qty)
-
+         
+         {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}
+          console.log('qty', qty)
          $(this).closest(".shopify-product-form").find(".currency_price_wcp").text('$'+totalprice)
        
          if(parseInt(qtycase) == 1 || parseInt(qtycase) == 0) {
