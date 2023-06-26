@@ -3,6 +3,14 @@
     display: block;
   }
 
+  .header__wrapper {
+    top: 0px !important;
+  }
+
+  .js__header__stuck {
+    top: 0px;
+  }
+
   .mobileSlider {
     display: none;
   }
