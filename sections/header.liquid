@@ -36,6 +36,29 @@
   endif
 -%}
 <style> 
+.vs-drawer__account {
+  min-width:87px;
+}
+
+.vs-header-btns {
+  flex-wrap: unset;
+  align-items: center;
+  background-color: #42a2e0;
+  text-decoration: none;
+  border-radius: 12px;
+  margin-right: 1rem;
+  color: white;
+  height: 50px;
+  display: flex;
+  text-align: center;
+  justify-content: center
+}
+
+ .vs-wrapper {
+  margin: unset;
+  max-width: unset;
+} 
+
   :root { 
     ---color-nav-text-transparent: {{ section.settings.transparent_text_color }}; 
     --menu-height: calc({{ menu_height }}px);
@@ -124,6 +147,10 @@
     </div>
     {{ logos }}
     <div class="header__mobile__right">
+      <a class="header__mobile__button small-hide" href="{{ routes.account_url }}">
+        {% render 'icon-account' %}
+        <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+      </a>
       <a class="header__mobile__button"
        data-drawer-toggle="drawer-cart"
         href="{{ routes.cart_url }}">
@@ -328,7 +355,7 @@
   data-section-type="header"> -->
 
   <header class="theme__header" role="banner" data-header-height>
-    <div class="wrapper">
+    <div class="wrapper vs-wrapper">
       <div class="header__mobile">
         {{ minimal }}
       </div>
@@ -346,11 +373,24 @@
             <div  data-takes-space class="header__desktop__bar__l">
               {{ logos }}
             </div>
-            <div  data-takes-space class="header__desktop__bar__r">
+            <div  data-takes-space class="header__desktop__bar__c">
               <div class="header__desktop__bar__inline">
                 {{ menu }}
-                {{ cart_content }}
               </div>
+            </div>
+
+            <div  data-takes-space class="header__desktop__bar__r" style="align-items: center;">
+              <a class="vs-drawer__account vs-header-btns" href="{{ routes.account_url }}">
+                {% render 'icon-account' %} {% if customer.id == null %}<span style="padding-left:5px">Log In</span>{%else%}<span style="padding-left:4px; font-size:.9rem">Account</span>{%endif%}
+                <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+              </a>
+              <a class="header__mobile__button vs-header-btns"
+                data-drawer-toggle="drawer-cart"
+                 href="{{ routes.cart_url }}">
+                 {% render 'icon-cart' %}
+                 <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
+                 {{ cart_status }}
+               </a>
             </div>
         {%- endcase -%}
       </div>

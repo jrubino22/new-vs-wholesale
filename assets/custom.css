@@ -2,7 +2,24 @@
   .aboveHeader {
     display: block;
   }
+
+  .header__wrapper {
+    top: 0px !important;
+  }
+
+  .js__header__stuck {
+    top: 0px;
+  }
+
   .mobileSlider {
+    display: none;
+  }
+
+  div#shopify-section-announcement {
+    display: none;
+  }
+
+  .medium-up-hide {
     display: none;
   }
 }
@@ -13,6 +30,10 @@
   }
   .mobileSlider {
     display: block;
+  }
+
+  .small-hide {
+    display: none !important;
   }
 }
 

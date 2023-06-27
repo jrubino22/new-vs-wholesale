@@ -1,0 +1,34 @@
+.vs-search__predictive {
+    background-color: black;
+}
+
+.vs-search-wrapper {
+    flex: 1 0 0;
+    display: inline-flex;
+    justify-content: right;
+    position: relative;
+}
+
+.vs-search-form {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: inline-flex;
+}
+
+.vs-search-input {
+    background-color: #EAF1F0 !important;
+    min-width: 350px;
+    display: inline-block;
+    color: black !important;
+}
+
+.vs-header__search__results {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    z-index: 10000;
+    background-color: black;
+    overflow-y: auto;
+    max-height: 900px
+}
