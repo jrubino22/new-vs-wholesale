@@ -37,7 +37,7 @@
 -%}
 <style> 
 .vs-drawer__account {
-  min-width:80px;
+  min-width:87px;
 }
 
 .vs-header-btns {
@@ -147,6 +147,10 @@
     </div>
     {{ logos }}
     <div class="header__mobile__right">
+      <a class="header__mobile__button small-hide" href="{{ routes.account_url }}">
+        {% render 'icon-account' %}
+        <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
+      </a>
       <a class="header__mobile__button"
        data-drawer-toggle="drawer-cart"
         href="{{ routes.cart_url }}">
@@ -377,7 +381,7 @@
 
             <div  data-takes-space class="header__desktop__bar__r" style="align-items: center;">
               <a class="vs-drawer__account vs-header-btns" href="{{ routes.account_url }}">
-                {% render 'icon-account' %} <span style="padding-left:5px">Log In</span>
+                {% render 'icon-account' %} {% if customer.id == null %}<span style="padding-left:5px">Log In</span>{%else%}<span style="padding-left:4px; font-size:.9rem">Account</span>{%endif%}
                 <span class="visually-hidden">{{ 'customer.account.title' | t }}</span>
               </a>
               <a class="header__mobile__button vs-header-btns"

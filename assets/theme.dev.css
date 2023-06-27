@@ -15619,7 +15619,7 @@ Collection grid section
 }
     
 .image__hero__frame.fade-in-child.use_image {
-margin-top: calc(var(--menu-height) * 1.48) !important;
+margin-top: calc(var(--menu-height) * 1.46) !important;
   }  
     
 @media only screen and (max-width: 810px){

@@ -29,6 +29,6 @@
     left: 0;
     z-index: 10000;
     background-color: black;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 900px
 }
