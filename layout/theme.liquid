@@ -384,23 +384,30 @@
     
       $(this).closest(".product-grid-item").find(".collection__image__top").css("opacity","0");  
      
-     //quantity per case
-      var qty = $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-caseqty");
-
+     //quantity per case     
+      let qty = 1
+      {% if customer.tags contains 'master-distributor' or customer.tags contains 'distributor' %}
+        {% unless customer.tags contains 'no-min-case'%}
+          qty = $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-caseqty");
+        {% endunless %}
+      {% endif %}  
       //quantity in stock
       var value= $(this).closest(".shopify-product-form").find("select[name='qunty_vl'] option[value='"+id+"']").attr("data-value");
       var qtycase = parseInt(value)/parseInt(qty);
+      console.log("val,qty", value, qty)
       // qtycase=qtycase.toFixed(2);
       // qtycase=qtycase.split('.')[1];
       $(this).closest(".shopify-product-form").find(".variant_inventory").text(parseInt(value));
       $(this).closest(".shopify-product-form").find(".inventory_cases").text(parseInt(qtycase));
 
       
-        
-    if(parseInt(qtycase) == 0){
+    
+    if(parseFloat(qtycase) < 1){
+      console.log('qc1', parseFloat(qtycase))
       $(this).closest(".shopify-product-form").find(".product__submit__buttons").addClass('disabled');
     }
     else{
+      console.log('qc2', parseFloat(qtycase))
       $(this).closest(".shopify-product-form").find(".product__submit__buttons").removeClass('disabled');
     }
     
